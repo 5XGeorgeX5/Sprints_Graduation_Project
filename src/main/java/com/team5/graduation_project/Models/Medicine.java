@@ -3,8 +3,6 @@ package com.team5.graduation_project.Models;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-
 @Entity
 @Table(name = "medicine")
 @Getter

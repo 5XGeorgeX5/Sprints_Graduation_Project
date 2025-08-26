@@ -1,6 +1,5 @@
 package com.team5.graduation_project.DTOs.Request;
 
-import com.team5.graduation_project.Models.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -27,6 +26,4 @@ public class AccountRegistrationRequestDTO {
 
     @NotBlank
     private String name;
-
-    private Role role;
 }

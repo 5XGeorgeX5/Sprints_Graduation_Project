@@ -1,7 +1,5 @@
 package com.team5.graduation_project.DTOs.Response;
 
-
-import com.team5.graduation_project.Models.Sender;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -13,9 +11,8 @@ import java.time.LocalDateTime;
 @Builder
 public class MessageResponseDTO {
     private Long id;
-    private Long doctorId;
-    private Long patientId;
+    private Long senderId;
+    private Long receiverId;
     private String content;
-    private Sender sender;
-    private LocalDateTime timestamp;
+    private LocalDateTime createdAt;
 }

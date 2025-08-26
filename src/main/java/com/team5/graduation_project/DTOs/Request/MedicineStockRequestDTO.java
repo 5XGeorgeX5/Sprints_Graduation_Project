@@ -17,9 +17,6 @@ public class MedicineStockRequestDTO {
     private Long medicineId;
 
     @NotNull
-    private Long pharmacyId;
-
-    @NotNull
     private BigDecimal price;
 
     @Min(0)

@@ -1,6 +1,5 @@
 package com.team5.graduation_project.DTOs.Request;
 
-import com.team5.graduation_project.Models.Sender;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -13,14 +12,8 @@ import lombok.*;
 public class MessageRequestDTO {
 
     @NotNull
-    private Long doctorId;
-
-    @NotNull
-    private Long patientId;
+    private Long receiverId;
 
     @NotBlank
     private String content;
-
-    @NotNull
-    private Sender sender;
 }

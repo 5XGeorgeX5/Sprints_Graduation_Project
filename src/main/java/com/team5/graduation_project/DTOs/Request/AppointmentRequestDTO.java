@@ -12,10 +12,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class AppointmentRequestDTO {
-
-    @NotNull
-    private Long patientId;
-
     @NotNull
     private Long doctorId;
 

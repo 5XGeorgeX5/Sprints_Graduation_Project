@@ -3,8 +3,6 @@ package com.team5.graduation_project.Models;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "message")
 @Getter
@@ -19,17 +17,14 @@ public class Message extends BaseEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "doctor_id", nullable = false)
-    private Doctor doctor;
+    @JoinColumn(name = "sender_id", nullable = false)
+    private Account sender;
 
     @ManyToOne
-    @JoinColumn(name = "patient_id", nullable = false)
-    private Patient patient;
+    @JoinColumn(name = "receiver_id", nullable = false)
+    private Account receiver;
 
     @Column(columnDefinition = "TEXT")
     private String content;
-
-    @Enumerated(EnumType.STRING)
-    private Sender sender;
 
 }

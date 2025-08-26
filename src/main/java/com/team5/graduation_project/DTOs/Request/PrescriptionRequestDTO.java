@@ -12,9 +12,6 @@ import lombok.*;
 public class PrescriptionRequestDTO {
 
     @NotNull
-    private Long doctorId;
-
-    @NotNull
     private Long patientId;
 
     @NotNull

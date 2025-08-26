@@ -15,9 +15,6 @@ public class MedicineOrderRequestDTO {
     private Long medicineId;
 
     @NotNull
-    private Long patientId;
-
-    @NotNull
     private Long pharmacyId;
 
     @Min(1)
