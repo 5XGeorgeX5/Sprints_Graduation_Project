@@ -1,0 +1,36 @@
+patient
+{
+  "username": "patient1",
+  "email": "patient1@example.com",
+  "password": "mypassword",
+  "name": "Alice Johnson"
+}
+
+pharmacy
+{
+  "username": "pharmacy1",
+  "email": "pharmacy1@example.com",
+  "password": "mypassword",
+  "name": "ph. Potato head"
+}
+
+doctor
+{
+  "account": {
+    "username": "drsmith",
+    "email": "dr.smith@example.com",
+    "password": "password123",
+    "name": "Dr. John Smith"
+  },
+  "startShift": "09:00:00",
+  "endShift": "17:00:00",
+  "appointmentDuration": 30
+}
+
+admin
+{
+  "username": "admin1",
+  "email": "admin@example.com",
+  "password": "securepass",
+  "name": "System Admin"
+}
