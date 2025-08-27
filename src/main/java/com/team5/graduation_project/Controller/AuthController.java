@@ -27,6 +27,7 @@ public class AuthController {
     private final IPatientService patientService;
     private final IAccountService accountService;
     private final IPharmacyService pharmacyService;
+    private final AccountRegisterAndLogin account;
 
     @PostMapping("/doctor/register")
     public ResponseEntity<BaseResponse> registerAsDoctor(@RequestBody DoctorCreateDTO dto){
@@ -54,7 +55,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<BaseResponse> login(@RequestBody LoginDTO dto){
-        String token = accountService.login(dto);
+        String token = account.login(dto);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new BaseResponse("Login" , token));
     }

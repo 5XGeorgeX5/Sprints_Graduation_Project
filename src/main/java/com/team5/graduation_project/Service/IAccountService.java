@@ -7,6 +7,4 @@ import com.team5.graduation_project.DTOs.Response.AccountResponseDTO;
 public interface IAccountService {
 
     public AccountResponseDTO register(AccountRegistrationRequestDTO dto);
-
-    public String login(LoginDTO dto);
 }
