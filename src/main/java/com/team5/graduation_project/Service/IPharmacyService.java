@@ -5,5 +5,5 @@ import com.team5.graduation_project.DTOs.Response.PharmacyResponseDTO;
 
 public interface IPharmacyService {
 
-    public PharmacyResponseDTO register(PharmacyCreateDTO dto);
+    PharmacyResponseDTO register(PharmacyCreateDTO dto);
 }

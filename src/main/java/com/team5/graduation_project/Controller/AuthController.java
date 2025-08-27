@@ -7,9 +7,15 @@ import com.team5.graduation_project.DTOs.Request.PharmacyCreateDTO;
 import com.team5.graduation_project.DTOs.Response.AccountResponseDTO;
 import com.team5.graduation_project.DTOs.Response.DoctorResponseDTO;
 import com.team5.graduation_project.DTOs.Response.PharmacyResponseDTO;
-import com.team5.graduation_project.Models.Patient;
+import com.team5.graduation_project.Mapper.DtoMapper;
+import com.team5.graduation_project.Models.Account;
+import com.team5.graduation_project.Models.Role;
 import com.team5.graduation_project.Response.BaseResponse;
-import com.team5.graduation_project.Service.*;
+import com.team5.graduation_project.Service.AccountService;
+import com.team5.graduation_project.Service.IDoctorService;
+import com.team5.graduation_project.Service.IPatientService;
+import com.team5.graduation_project.Service.IPharmacyService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,40 +31,38 @@ public class AuthController {
 
     private final IDoctorService doctorService;
     private final IPatientService patientService;
-    private final IAccountService accountService;
     private final IPharmacyService pharmacyService;
-    private final AccountRegisterAndLogin account;
+    private final AccountService accountService;
+    private final DtoMapper mapper;
 
     @PostMapping("/doctor/register")
-    public ResponseEntity<BaseResponse> registerAsDoctor(@RequestBody DoctorCreateDTO dto){
+    public ResponseEntity<BaseResponse> registerAsDoctor(@Valid @RequestBody DoctorCreateDTO dto) {
         DoctorResponseDTO result = doctorService.register(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponse("Registered" , result));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponse("Registered", result));
     }
 
     @PostMapping("/patient/register")
-    public ResponseEntity<BaseResponse> registerAsPatient(@RequestBody AccountRegistrationRequestDTO dto){
+    public ResponseEntity<BaseResponse> registerAsPatient(@Valid @RequestBody AccountRegistrationRequestDTO dto) {
         AccountResponseDTO result = patientService.register(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponse("Registered" , result));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponse("Registered", result));
     }
 
     @PostMapping("/pharmacy/register")
-    public ResponseEntity<BaseResponse> registerAsPharmacy(@RequestBody PharmacyCreateDTO dto){
+    public ResponseEntity<BaseResponse> registerAsPharmacy(@Valid @RequestBody PharmacyCreateDTO dto) {
         PharmacyResponseDTO result = pharmacyService.register(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponse("Registered" , result));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponse("Registered", result));
     }
 
     @PostMapping("/admin/register")
-    public ResponseEntity<BaseResponse> registerAsAdmin(@RequestBody AccountRegistrationRequestDTO dto){
-        AccountResponseDTO result = accountService.register(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponse("Registered" , result));
+    public ResponseEntity<BaseResponse> registerAsAdmin(@Valid @RequestBody AccountRegistrationRequestDTO dto) {
+        Account account = accountService.createAccount(dto, Role.ADMIN);
+        AccountResponseDTO result = mapper.toAccountResponseDTO(account);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponse("Registered", result));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<BaseResponse> login(@RequestBody LoginDTO dto){
-        String token = account.login(dto);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new BaseResponse("Login" , token));
+    public ResponseEntity<BaseResponse> login(@Valid @RequestBody LoginDTO dto) {
+        String token = accountService.login(dto);
+        return ResponseEntity.ok(new BaseResponse("Login", token));
     }
-
-
 }

@@ -1,5 +1,6 @@
 package com.team5.graduation_project.DTOs.Request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -15,7 +16,12 @@ public class DoctorCreateDTO {
     @NotNull
     private AccountRegistrationRequestDTO account;
 
+    @JsonFormat(pattern = "HH:mm")
+    @NotNull
     private LocalTime startShift;
+
+    @JsonFormat(pattern = "HH:mm")
+    @NotNull
     private LocalTime endShift;
 
     @Min(1)

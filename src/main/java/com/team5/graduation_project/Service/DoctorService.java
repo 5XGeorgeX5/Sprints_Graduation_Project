@@ -1,8 +1,8 @@
 package com.team5.graduation_project.Service;
 
 import com.team5.graduation_project.DTOs.Request.DoctorCreateDTO;
-import com.team5.graduation_project.DTOs.Response.AccountResponseDTO;
 import com.team5.graduation_project.DTOs.Response.DoctorResponseDTO;
+import com.team5.graduation_project.Mapper.DtoMapper;
 import com.team5.graduation_project.Models.Account;
 import com.team5.graduation_project.Models.Doctor;
 import com.team5.graduation_project.Models.Role;
@@ -12,16 +12,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class DoctorService implements IDoctorService{
+public class DoctorService implements IDoctorService {
 
-    private final AccountRegisterAndLogin helper;
+    private final AccountService accountService;
     private final DoctorRepository doctorRepository;
+    private final DtoMapper dtoMapper;
 
     @Override
     public DoctorResponseDTO register(DoctorCreateDTO dto) {
-        Account account = helper.registerAccount(dto.getAccount(), Role.DOCTOR);
-
-        AccountResponseDTO response = helper.registerResponse(account);
+        Account account = accountService.createAccount(dto.getAccount(), Role.DOCTOR);
 
         Doctor doctor = new Doctor();
         doctor.setAccount(account);
@@ -31,13 +30,6 @@ public class DoctorService implements IDoctorService{
 
         doctorRepository.save(doctor);
 
-        DoctorResponseDTO result = new DoctorResponseDTO();
-        result.setAccount(response);
-        result.setStartShift(doctor.getStartShift());
-        result.setEndShift(doctor.getEndShift());
-        result.setAppointmentDuration(doctor.getAppointmentDuration());
-
-
-        return result;
+        return dtoMapper.toDoctorResponseDTO(doctor);
     }
 }

@@ -5,5 +5,5 @@ import com.team5.graduation_project.DTOs.Response.DoctorResponseDTO;
 
 public interface IDoctorService {
 
-    public DoctorResponseDTO register(DoctorCreateDTO dto);
+    DoctorResponseDTO register(DoctorCreateDTO dto);
 }

@@ -5,5 +5,5 @@ import com.team5.graduation_project.DTOs.Response.AccountResponseDTO;
 
 public interface IPatientService {
 
-    public AccountResponseDTO register(AccountRegistrationRequestDTO dto);
+    AccountResponseDTO register(AccountRegistrationRequestDTO dto);
 }

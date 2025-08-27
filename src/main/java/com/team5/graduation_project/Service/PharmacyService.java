@@ -1,8 +1,8 @@
 package com.team5.graduation_project.Service;
 
 import com.team5.graduation_project.DTOs.Request.PharmacyCreateDTO;
-import com.team5.graduation_project.DTOs.Response.AccountResponseDTO;
 import com.team5.graduation_project.DTOs.Response.PharmacyResponseDTO;
+import com.team5.graduation_project.Mapper.DtoMapper;
 import com.team5.graduation_project.Models.Account;
 import com.team5.graduation_project.Models.Pharmacy;
 import com.team5.graduation_project.Models.Role;
@@ -12,16 +12,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class PharmacyService implements IPharmacyService{
+public class PharmacyService implements IPharmacyService {
 
-    private final AccountRegisterAndLogin helper;
+    private final AccountService accountService;
     private final PharmacyRepository pharmacyRepository;
+    private final DtoMapper mapper;
 
     @Override
     public PharmacyResponseDTO register(PharmacyCreateDTO dto) {
-        Account account = helper.registerAccount(dto.getAccount(), Role.PHARMACY);
-
-        AccountResponseDTO response = helper.registerResponse(account);
+        Account account = accountService.createAccount(dto.getAccount(), Role.PHARMACY);
 
         Pharmacy pharmacy = new Pharmacy();
         pharmacy.setAccount(account);
@@ -29,10 +28,6 @@ public class PharmacyService implements IPharmacyService{
 
         pharmacyRepository.save(pharmacy);
 
-        PharmacyResponseDTO result = new PharmacyResponseDTO();
-        result.setAccount(response);
-        result.setAddress(pharmacy.getAddress());
-
-        return result;
+        return mapper.toPharmacyResponseDTO(pharmacy);
     }
 }

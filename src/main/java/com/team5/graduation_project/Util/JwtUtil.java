@@ -17,11 +17,11 @@ public class JwtUtil {
     @Value("${secret.key}")
     private String SECRET_KEY;
 
-    private Key getSignKey(){
+    private Key getSignKey() {
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }
 
-    public String generateToken(String username){
+    public String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
                 .signWith(getSignKey())
@@ -48,15 +48,15 @@ public class JwtUtil {
     }
 
     private Date extractExpiration(String token) {
-        return extractClaim(token , Claims::getExpiration);
+        return extractClaim(token, Claims::getExpiration);
     }
 
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
-    public boolean isTokenValid(String token , UserDetails userDetails){
+    public boolean isTokenValid(String token, UserDetails userDetails) {
         final String userName = extractUsername(token);
-        return (userName.equals(userDetails.getUsername()))&& !isTokenExpired(token);
+        return (userName.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 }
