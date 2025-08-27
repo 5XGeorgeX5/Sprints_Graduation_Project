@@ -1,0 +1,9 @@
+Task 5
+@Omar Gamal
+Medicine CRUD
+
+Chat controller:
+chat/doctor/{doctorId}
+will return the chat for the chat for the current logged in patient + POST method to add a message
+chat/patient/{patientId}
+will return the chat for the chat for the current logged in doctor + POST method to add a message
