@@ -1,12 +1,11 @@
 package com.team5.graduation_project.Mapper;
 
 import com.team5.graduation_project.DTOs.Request.AccountRegistrationRequestDTO;
-import com.team5.graduation_project.DTOs.Response.AccountResponseDTO;
-import com.team5.graduation_project.DTOs.Response.DoctorResponseDTO;
-import com.team5.graduation_project.DTOs.Response.PharmacyResponseDTO;
-import com.team5.graduation_project.Models.Account;
-import com.team5.graduation_project.Models.Doctor;
-import com.team5.graduation_project.Models.Pharmacy;
+import com.team5.graduation_project.DTOs.Request.MedicineOrderRequestDTO;
+import com.team5.graduation_project.DTOs.Request.MedicineRequestDTO;
+import com.team5.graduation_project.DTOs.Request.MedicineStockRequestDTO;
+import com.team5.graduation_project.DTOs.Response.*;
+import com.team5.graduation_project.Models.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -33,5 +32,54 @@ public class DtoMapper {
 
     public PharmacyResponseDTO toPharmacyResponseDTO(Pharmacy pharmacy) {
         return modelMapper.map(pharmacy, PharmacyResponseDTO.class);
+    }
+
+    // Medicine mappings
+    public Medicine toMedicineEntity(MedicineRequestDTO dto) {
+        return modelMapper.map(dto, Medicine.class);
+    }
+
+    public MedicineResponseDTO toMedicineResponseDTO(Medicine medicine) {
+        return modelMapper.map(medicine, MedicineResponseDTO.class);
+    }
+
+    // Medicine Stock mappings
+    public MedicineStock toMedicineStockEntity(MedicineStockRequestDTO dto, Medicine medicine, Pharmacy pharmacy) {
+        MedicineStock stock = new MedicineStock();
+        stock.setMedicine(medicine);
+        stock.setPharmacy(pharmacy);
+        stock.setPrice(dto.getPrice());
+        stock.setQuantity(dto.getQuantity());
+        return stock;
+    }
+
+    public MedicineStockResponseDTO toMedicineStockResponseDTO(MedicineStock stock) {
+        return MedicineStockResponseDTO.builder()
+                .id(stock.getId())
+                .medicineId(stock.getMedicine().getId())
+                .pharmacyId(stock.getPharmacy().getId())
+                .price(stock.getPrice())
+                .quantity(stock.getQuantity())
+                .build();
+    }
+
+    // Medicine Order mappings
+    public MedicineOrder toMedicineOrderEntity(MedicineOrderRequestDTO dto, Medicine medicine, Patient patient, Pharmacy pharmacy) {
+        MedicineOrder order = new MedicineOrder();
+        order.setMedicine(medicine);
+        order.setPatient(patient);
+        order.setPharmacy(pharmacy);
+        order.setQuantity(dto.getQuantity());
+        return order;
+    }
+
+    public MedicineOrderResponseDTO toMedicineOrderResponseDTO(MedicineOrder order) {
+        return MedicineOrderResponseDTO.builder()
+                .id(order.getId())
+                .medicineId(order.getMedicine().getId())
+                .patientId(order.getPatient().getId())
+                .pharmacyId(order.getPharmacy().getId())
+                .quantity(order.getQuantity())
+                .build();
     }
 }
