@@ -79,16 +79,19 @@ public class MedicineService {
             throw new ResourceNotFound("Medicine not found with id: " + id);
         }
 
-        // Check if medicine is referenced in orders
         List<MedicineOrder> existingOrders = medicineOrderRepository.findByMedicineId(id);
         if (!existingOrders.isEmpty()) {
             throw new IllegalArgumentException("Cannot delete medicine that has existing orders");
+        }
+        List<MedicineStock> existingStock =medicineStockRepository.findByMedicineId(id);
+
+        if (!existingStock.isEmpty()) {
+            throw new IllegalArgumentException("Cannot delete medicine that has existing stock");
         }
 
         medicineRepository.deleteById(id);
     }
 
-    // Browse available medicines for patients (Story 7)
     public List<MedicineStockResponseDTO> getAvailableMedicines() {
         return medicineStockRepository.findAvailableStocks().stream()
                 .map(dtoMapper::toMedicineStockResponseDTO)
