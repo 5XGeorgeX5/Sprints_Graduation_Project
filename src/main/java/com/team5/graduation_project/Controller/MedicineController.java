@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,6 +33,7 @@ public class MedicineController {
         return ResponseEntity.ok(new BaseResponse("Pharmacy medicines retrieved successfully", medicines));
     }
 
+    @PreAuthorize("hasAuthority('PHARMACY')")
     @PostMapping
     public ResponseEntity<BaseResponse> createMedicine(@Valid @RequestBody MedicineRequestDTO request) {
         MedicineResponseDTO medicine = medicineService.createMedicine(request);
@@ -57,6 +59,7 @@ public class MedicineController {
         return ResponseEntity.ok(new BaseResponse("Search completed successfully", medicines));
     }
 
+    @PreAuthorize("hasAuthority('PHARMACY')")
     @PutMapping("/{id}")
     public ResponseEntity<BaseResponse> updateMedicine(@PathVariable Long id,
                                                        @Valid @RequestBody MedicineRequestDTO request) {
@@ -64,6 +67,7 @@ public class MedicineController {
         return ResponseEntity.ok(new BaseResponse("Medicine updated successfully", medicine));
     }
 
+    @PreAuthorize("hasAuthority('PHARMACY')")
     @DeleteMapping("/{id}")
     public ResponseEntity<BaseResponse> deleteMedicine(@PathVariable Long id) {
         medicineService.deleteMedicine(id);
