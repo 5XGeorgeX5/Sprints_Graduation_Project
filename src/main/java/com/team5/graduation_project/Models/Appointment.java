@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "appointment")
@@ -17,6 +18,8 @@ public class Appointment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    List<String> followUpNotes;
 
     @ManyToOne
     @JoinColumn(name = "patient_id", nullable = false)

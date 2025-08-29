@@ -2,24 +2,34 @@ package com.team5.graduation_project.Controller;
 
 import com.team5.graduation_project.DTOs.Request.PrescriptionRequestDTO;
 import com.team5.graduation_project.DTOs.Response.PrescriptionResponseDTO;
+import com.team5.graduation_project.Response.BaseResponse;
 import com.team5.graduation_project.Service.PrescriptionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/prescriptions")
+@RequestMapping("/api/prescription")
 @RequiredArgsConstructor
 public class PrescriptionController {
 
-    private final PrescriptionService prescriptionService;
+    private PrescriptionService prescriptionService;
 
-    @PostMapping("/doctor/{doctorId}")
-    public ResponseEntity<PrescriptionResponseDTO> createPrescription(
-            @PathVariable Long doctorId,
-            @Valid @RequestBody PrescriptionRequestDTO request) {
-        PrescriptionResponseDTO response = prescriptionService.createPrescription(doctorId, request);
-        return ResponseEntity.status(201).body(response);
+    @PostMapping("/{id}")
+    @PreAuthorize(("hasAuthority('DOCTOR')"))
+    public ResponseEntity<BaseResponse> createPrescription(@PathVariable Long id,@RequestBody PrescriptionRequestDTO prescriptionRequest) {
+        PrescriptionResponseDTO prescription = prescriptionService.createPrescription(id,prescriptionRequest);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(new BaseResponse("Prescription created successfully", prescription));
+    }
+
+    @GetMapping("/{prescriptionId}")
+    public ResponseEntity<BaseResponse> getDoctorPrescription(@PathVariable Long prescriptionId) {
+        PrescriptionResponseDTO prescription = prescriptionService.getDoctorPresciprion(prescriptionId);
+        return ResponseEntity.ok(new BaseResponse("Prescription retrieved successfully", prescription));
     }
 }

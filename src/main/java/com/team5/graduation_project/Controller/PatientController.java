@@ -1,13 +1,25 @@
 package com.team5.graduation_project.Controller;
 
 import com.team5.graduation_project.DTOs.Request.AccountRegistrationRequestDTO;
+import com.team5.graduation_project.DTOs.Request.DoctorCreateDTO;
 import com.team5.graduation_project.DTOs.Response.AccountResponseDTO;
+import com.team5.graduation_project.DTOs.Response.DoctorResponseDTO;
+import com.team5.graduation_project.DTOs.Response.PrescriptionResponseDTO;
+import com.team5.graduation_project.Models.Patient;
+import com.team5.graduation_project.Response.BaseResponse;
+import com.team5.graduation_project.Service.IDoctorService;
 import com.team5.graduation_project.Service.Patient.IPatientService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 
@@ -17,6 +29,7 @@ import java.util.List;
 public class PatientController {
 
     private final IPatientService patientService;
+    private final IDoctorService doctorService;
 
     @PostMapping
     public ResponseEntity<AccountResponseDTO> registerPatient(@RequestBody AccountRegistrationRequestDTO dto) {
@@ -48,5 +61,23 @@ public class PatientController {
     public ResponseEntity<Void> deletePatient(@PathVariable Long id) {
         patientService.deletePatient(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{doctorId}")
+    public ResponseEntity<BaseResponse> getDoctorPatients(@PathVariable Long doctorId) {
+        List<Patient> patients = doctorService.getDoctorPatients(doctorId);
+        return ResponseEntity.ok(new BaseResponse("Doctor patients retrieved successfully", patients));
+    }
+
+    @GetMapping("/patients/{patientId}/medical-history")
+    public ResponseEntity<BaseResponse> getPatientMedicalHistory(@PathVariable Long patientId) {
+        List<PrescriptionResponseDTO> medicalHistory = patientService.getPatientMedicalHistory(patientId);
+        return ResponseEntity.ok(new BaseResponse("Patient medical history retrieved successfully", medicalHistory));
+    }
+
+    @GetMapping("/patients/{patientId}/consultations")
+    public ResponseEntity<BaseResponse> getPatientPreviousConsultations(@PathVariable Long patientId) {
+        List<List<String>> consultations = patientService.getPatientPreviousConsultations(patientId);
+        return ResponseEntity.ok(new BaseResponse("Patient previous consultations retrieved successfully", consultations));
     }
 }

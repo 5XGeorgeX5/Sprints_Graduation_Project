@@ -2,16 +2,18 @@ package com.team5.graduation_project.Service.Patient;
 
 import com.team5.graduation_project.DTOs.Request.AccountRegistrationRequestDTO;
 import com.team5.graduation_project.DTOs.Response.AccountResponseDTO;
+import com.team5.graduation_project.DTOs.Response.PrescriptionResponseDTO;
+import com.team5.graduation_project.Exceptions.ResourceNotFound;
 import com.team5.graduation_project.Mapper.DtoMapper;
-import com.team5.graduation_project.Models.Account;
-import com.team5.graduation_project.Models.Patient;
-import com.team5.graduation_project.Models.Role;
+import com.team5.graduation_project.Models.*;
+import com.team5.graduation_project.Repository.AppointmentRepository;
 import com.team5.graduation_project.Repository.PatientRepository;
 import com.team5.graduation_project.Service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -23,6 +25,7 @@ public class PatientService implements IPatientService {
     private final AccountService accountService;
     private final PatientRepository patientRepository;
     private final DtoMapper mapper;
+    private final AppointmentRepository appointmentRepository;
 
     @Override
     public AccountResponseDTO register(AccountRegistrationRequestDTO dto) {
@@ -70,6 +73,31 @@ public class PatientService implements IPatientService {
         patientRepository.deleteById(id);
 
         accountService.deleteAccount(patient.getAccount().getId());
+    }
+
+    @Override
+    public List<PrescriptionResponseDTO> getPatientMedicalHistory(Long id) {
+        Patient patient=patientRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFound("Patient not found"));
+        List<Prescription> prescriptions=patient.getPrescriptions();
+        List<PrescriptionResponseDTO> dtos=new ArrayList<>();
+        for(Prescription prescription:prescriptions){
+            dtos.add(mapper.toPrescriptionResponseDTO(prescription));
+        }
+        return dtos;
+    }
+
+    @Override
+    public List<List<String>> getPatientPreviousConsultations(Long id) {
+       List<Appointment> patientAppointments=appointmentRepository.findByPatientId(id);
+       List<List<String>> consultations=new ArrayList<>();
+    for(Appointment appointment:patientAppointments){
+        List<String> notes = appointment.getFollowUpNotes() != null
+                ? appointment.getFollowUpNotes()
+                : new ArrayList<>();
+        consultations.add(notes);
+    }
+    return consultations;
     }
 
 }

@@ -86,4 +86,16 @@ public class DtoMapper {
                 .quantity(order.getQuantity())
                 .build();
     }
+
+    public PrescriptionResponseDTO toPrescriptionResponseDTO(Prescription prescription) {
+
+        return PrescriptionResponseDTO.builder()
+                .id(prescription.getId())
+                .doctorId(prescription.getDoctor().getId() )
+                .patientId(prescription.getPatient().getId())
+                .medicineId(prescription.getMedicine().getId())
+                .dosage(prescription.getDosage())
+                .instruction(prescription.getInstruction())
+                .build();
+    }
 }

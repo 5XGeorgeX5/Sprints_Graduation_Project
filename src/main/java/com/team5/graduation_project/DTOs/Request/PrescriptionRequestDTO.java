@@ -17,6 +17,9 @@ public class PrescriptionRequestDTO {
     @NotNull
     private Long medicineId;
 
+    @NotNull
+    private Long doctorId;
+
     @NotBlank
     private String dosage;
 

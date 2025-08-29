@@ -19,6 +19,7 @@ import java.util.List;
 
 import static org.springframework.http.HttpStatus.*;
 
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -101,4 +102,17 @@ public class AppointmentService implements IAppointmentService {
         }
         appointmentRepository.deleteById(id);
     }
-}
+
+    @Override
+    public AppointmentResponseDTO addFollowupNotes(Long id, String note) {
+
+            Appointment appointment = appointmentRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Appointment not found"));
+
+            appointment.getFollowUpNotes().add(note);
+            appointmentRepository.save(appointment);
+
+            return mapper.toAppointmentResponseDTO(appointment);
+        }
+    }
+

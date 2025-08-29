@@ -4,6 +4,8 @@ import com.team5.graduation_project.DTOs.Request.AppointmentRequestDTO;
 import com.team5.graduation_project.DTOs.Response.AppointmentResponseDTO;
 import com.team5.graduation_project.Models.Account;
 import com.team5.graduation_project.Service.Appointment.IAppointmentService;
+import com.team5.graduation_project.Response.BaseResponse;
+import com.team5.graduation_project.Service.Appointment.AppointmentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,7 +18,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/appointments")
 @RequiredArgsConstructor
 public class AppointmentController {
-    private final IAppointmentService appointmentService;
+    private final AppointmentService appointmentService;
+
+
+
 
     @PostMapping
     @PreAuthorize("hasRole('PATIENT')")
@@ -48,5 +53,16 @@ public class AppointmentController {
         appointmentService.deleteAppointment(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{appointmentId}/add-follow-up")
+    public ResponseEntity<BaseResponse> addFollowUpNote(
+            @PathVariable Long appointmentId,
+            @RequestBody String note) {
+        appointmentService.addFollowupNotes(appointmentId, note);
+        return ResponseEntity.ok(
+                new BaseResponse("Follow-up note added successfully", null)
+        );
+    }
+
 
 }

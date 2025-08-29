@@ -3,6 +3,7 @@ package com.team5.graduation_project.DTOs.Response;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,4 +15,5 @@ public class AppointmentResponseDTO {
     private Long patientId;
     private Long doctorId;
     private LocalDateTime appointmentTime;
+    private List<String> followUpNotes;
 }

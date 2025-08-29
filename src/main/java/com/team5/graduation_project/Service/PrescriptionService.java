@@ -2,6 +2,8 @@ package com.team5.graduation_project.Service;
 
 import com.team5.graduation_project.DTOs.Request.PrescriptionRequestDTO;
 import com.team5.graduation_project.DTOs.Response.PrescriptionResponseDTO;
+import com.team5.graduation_project.Exceptions.ResourceNotFound;
+import com.team5.graduation_project.Mapper.DtoMapper;
 import com.team5.graduation_project.Models.Doctor;
 import com.team5.graduation_project.Models.Medicine;
 import com.team5.graduation_project.Models.Patient;
@@ -23,36 +25,36 @@ public class PrescriptionService {
     private final DoctorRepository doctorRepository;
     private final PatientRepository patientRepository;
     private final MedicineRepository medicineRepository;
+    private final DtoMapper mapper;
 
     @Transactional
-    public PrescriptionResponseDTO createPrescription(Long doctorId, PrescriptionRequestDTO request) {
+    public PrescriptionResponseDTO createPrescription(Long doctorId, PrescriptionRequestDTO dto) {
         Doctor doctor = doctorRepository.findById(doctorId)
                 .orElseThrow(() -> new EntityNotFoundException("Doctor not found"));
 
-        Patient patient = patientRepository.findById(request.getPatientId())
-                .orElseThrow(() -> new EntityNotFoundException("Patient not found"));
+        Patient patient = patientRepository.findById(dto.getPatientId())
+                .orElseThrow(() -> new ResourceNotFound("Patient not found"));
+        Medicine medicine = medicineRepository.findById(dto.getMedicineId())
+                .orElseThrow(() -> new ResourceNotFound("Medicine not found"));
 
-        Medicine medicine = medicineRepository.findById(request.getMedicineId())
-                .orElseThrow(() -> new EntityNotFoundException("Medicine not found"));
 
-        Prescription prescription = Prescription.builder()
-                .doctor(doctor)
-                .patient(patient)
-                .medicine(medicine)
-                .dosage(request.getDosage())
-                .instruction(request.getInstruction())
-                .build();
 
-        Prescription saved = prescriptionRepository.save(prescription);
+        Prescription prescription = new Prescription();
+        prescription.setPatient(patient);
+        prescription.setMedicine(medicine);
+        prescription.setDoctor(doctor);
+        prescription.setDosage(dto.getDosage());
+        prescription.setInstruction(dto.getInstruction());
 
-        return PrescriptionResponseDTO.builder()
-                .id(saved.getId())
-                .doctorId(saved.getDoctor().getId())
-                .patientId(saved.getPatient().getId())
-                .medicineId(saved.getMedicine().getId())
-                .dosage(saved.getDosage())
-                .instruction(saved.getInstruction())
-                .build();
+        prescriptionRepository.save(prescription);
+
+        return mapper.toPrescriptionResponseDTO(prescription);
+    }
+
+    public PrescriptionResponseDTO getDoctorPresciprion(Long id){
+        Prescription prescription = prescriptionRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFound("Prescription Not Found"));
+
+        return mapper.toPrescriptionResponseDTO(prescription);
     }
 }
-
