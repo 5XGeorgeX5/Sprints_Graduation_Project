@@ -13,7 +13,7 @@ import com.team5.graduation_project.Models.Role;
 import com.team5.graduation_project.Response.BaseResponse;
 import com.team5.graduation_project.Service.AccountService;
 import com.team5.graduation_project.Service.IDoctorService;
-import com.team5.graduation_project.Service.IPatientService;
+import com.team5.graduation_project.Service.Patient.IPatientService;
 import com.team5.graduation_project.Service.IPharmacyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

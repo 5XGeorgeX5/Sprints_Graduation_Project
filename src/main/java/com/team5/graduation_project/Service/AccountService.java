@@ -53,4 +53,46 @@ public class AccountService {
         return jwtUtil.generateToken(loginDto.getUsername());
 
     }
+
+        public Account updateAccount(Long id, AccountRegistrationRequestDTO dto) {
+            // Fetch existing account
+            Account account = accountRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Account not found with id: " + id));
+
+            // Check if username is being changed and already exists
+            if (!account.getUsername().equals(dto.getUsername())) {
+                accountRepository.findByUsername(dto.getUsername()).ifPresent(existing -> {
+                    throw new AlreadyExists("Username already exists: " + dto.getUsername());
+                });
+                account.setUsername(dto.getUsername());
+            }
+
+            // Update email if changed
+            if (!account.getEmail().equals(dto.getEmail())) {
+                account.setEmail(dto.getEmail());
+            }
+
+            // Update name if changed
+            if (!account.getName().equals(dto.getName())) {
+                account.setName(dto.getName());
+            }
+
+            // Update password if provided (always encode it)
+            if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+                account.setPassword(passwordEncoder.encode(dto.getPassword()));
+            }
+
+            // Save and return updated entity
+            return accountRepository.save(account);
+        }
+
+    public void deleteAccount(Long id) {
+        // Check if account exists
+        Account account = accountRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Account not found with id: " + id));
+
+        // Delete account
+        accountRepository.delete(account);
+    }
+
 }
