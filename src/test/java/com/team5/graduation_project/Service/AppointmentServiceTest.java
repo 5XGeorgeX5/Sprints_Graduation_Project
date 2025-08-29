@@ -9,6 +9,7 @@ import com.team5.graduation_project.Models.Patient;
 import com.team5.graduation_project.Repository.AppointmentRepository;
 import com.team5.graduation_project.Repository.DoctorRepository;
 import com.team5.graduation_project.Repository.PatientRepository;
+import com.team5.graduation_project.Service.Appointment.AppointmentService;
 import com.team5.graduation_project.Service.Appointment.IAppointmentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +32,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.*;
 
 @ExtendWith(MockitoExtension.class)
-class IAppointmentServiceTest {
+class AppointmentServiceTest {
 
     @Mock
     private AppointmentRepository appointmentRepository;
@@ -46,7 +47,7 @@ class IAppointmentServiceTest {
     private DtoMapper mapper;
 
     @InjectMocks
-    private IAppointmentService appointmentService;
+    private AppointmentService appointmentService;
 
     private Patient patient;
     private Doctor doctor;
