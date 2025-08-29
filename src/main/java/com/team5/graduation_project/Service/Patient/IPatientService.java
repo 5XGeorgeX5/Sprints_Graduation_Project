@@ -9,8 +9,13 @@ import java.util.List;
 public interface IPatientService {
 
     AccountResponseDTO register(AccountRegistrationRequestDTO dto);
+
+    List<AccountResponseDTO> getAllPatients();
+
     AccountResponseDTO getPatientById(Long id);
+
     AccountResponseDTO updatePatient(Long id, AccountRegistrationRequestDTO dto);
+
     void deletePatient(Long id);
 }
 

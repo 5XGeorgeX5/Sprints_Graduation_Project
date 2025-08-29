@@ -1,9 +1,9 @@
 package com.team5.graduation_project.Service;
 
-import com.team5.graduation_project.DTOs.Request.MedicineRequestDTO;
 import com.team5.graduation_project.DTOs.Request.MedicineOrderRequestDTO;
-import com.team5.graduation_project.DTOs.Response.MedicineResponseDTO;
+import com.team5.graduation_project.DTOs.Request.MedicineRequestDTO;
 import com.team5.graduation_project.DTOs.Response.MedicineOrderResponseDTO;
+import com.team5.graduation_project.DTOs.Response.MedicineResponseDTO;
 import com.team5.graduation_project.DTOs.Response.MedicineStockResponseDTO;
 import com.team5.graduation_project.Exceptions.AlreadyExists;
 import com.team5.graduation_project.Exceptions.ResourceNotFound;
@@ -83,7 +83,7 @@ public class MedicineService {
         if (!existingOrders.isEmpty()) {
             throw new IllegalArgumentException("Cannot delete medicine that has existing orders");
         }
-        List<MedicineStock> existingStock =medicineStockRepository.findByMedicineId(id);
+        List<MedicineStock> existingStock = medicineStockRepository.findByMedicineId(id);
 
         if (!existingStock.isEmpty()) {
             throw new IllegalArgumentException("Cannot delete medicine that has existing stock");

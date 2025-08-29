@@ -9,6 +9,8 @@ import java.util.List;
 @Repository
 public interface MedicineOrderRepository extends JpaRepository<MedicineOrder, Long> {
     List<MedicineOrder> findByPatientId(Long patientId);
+
     List<MedicineOrder> findByPharmacyId(Long pharmacyId);
+
     List<MedicineOrder> findByMedicineId(Long medicineId);
 }

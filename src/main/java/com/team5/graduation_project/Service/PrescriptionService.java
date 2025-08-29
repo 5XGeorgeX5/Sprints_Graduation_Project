@@ -2,8 +2,14 @@ package com.team5.graduation_project.Service;
 
 import com.team5.graduation_project.DTOs.Request.PrescriptionRequestDTO;
 import com.team5.graduation_project.DTOs.Response.PrescriptionResponseDTO;
-import com.team5.graduation_project.Models.*;
-import com.team5.graduation_project.Repository.*;
+import com.team5.graduation_project.Models.Doctor;
+import com.team5.graduation_project.Models.Medicine;
+import com.team5.graduation_project.Models.Patient;
+import com.team5.graduation_project.Models.Prescription;
+import com.team5.graduation_project.Repository.DoctorRepository;
+import com.team5.graduation_project.Repository.MedicineRepository;
+import com.team5.graduation_project.Repository.PatientRepository;
+import com.team5.graduation_project.Repository.PrescriptionRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

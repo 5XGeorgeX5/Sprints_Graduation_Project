@@ -12,6 +12,7 @@ import java.util.Optional;
 @Repository
 public interface MedicineStockRepository extends JpaRepository<MedicineStock, Long> {
     List<MedicineStock> findByPharmacyId(Long pharmacyId);
+
     List<MedicineStock> findByMedicineId(Long medicineId);
 
     @Query("SELECT ms FROM MedicineStock ms WHERE ms.medicine.id = :medicineId AND ms.pharmacy.id = :pharmacyId")

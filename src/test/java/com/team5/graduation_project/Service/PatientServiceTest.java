@@ -1,4 +1,5 @@
 package com.team5.graduation_project.Service;
+
 import com.team5.graduation_project.DTOs.Request.AccountRegistrationRequestDTO;
 import com.team5.graduation_project.DTOs.Response.AccountResponseDTO;
 import com.team5.graduation_project.Mapper.DtoMapper;
@@ -6,8 +7,6 @@ import com.team5.graduation_project.Models.Account;
 import com.team5.graduation_project.Models.Patient;
 import com.team5.graduation_project.Models.Role;
 import com.team5.graduation_project.Repository.PatientRepository;
-import com.team5.graduation_project.Service.AccountService;
-import com.team5.graduation_project.Service.Patient.IPatientService;
 import com.team5.graduation_project.Service.Patient.PatientService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

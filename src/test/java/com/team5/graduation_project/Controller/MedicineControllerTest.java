@@ -1,6 +1,5 @@
 package com.team5.graduation_project.Controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team5.graduation_project.DTOs.Request.MedicineRequestDTO;
 import com.team5.graduation_project.DTOs.Response.MedicineResponseDTO;
 import com.team5.graduation_project.DTOs.Response.MedicineStockResponseDTO;
@@ -15,11 +14,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -59,7 +59,7 @@ class MedicineControllerTest {
     @Test
     void getAvailableMedicines_ShouldReturnAvailableMedicines() {
         // Arrange
-        List<MedicineStockResponseDTO> medicines = Arrays.asList(stockResponse);
+        List<MedicineStockResponseDTO> medicines = Collections.singletonList(stockResponse);
         when(medicineService.getAvailableMedicines()).thenReturn(medicines);
 
         // Act
@@ -78,7 +78,7 @@ class MedicineControllerTest {
     @Test
     void getAvailableMedicinesByPharmacy_ShouldReturnPharmacyMedicines() {
         // Arrange
-        List<MedicineStockResponseDTO> medicines = Arrays.asList(stockResponse);
+        List<MedicineStockResponseDTO> medicines = Collections.singletonList(stockResponse);
         when(medicineService.getAvailableMedicinesByPharmacy(1L)).thenReturn(medicines);
 
         // Act
@@ -115,7 +115,7 @@ class MedicineControllerTest {
     @Test
     void getAllMedicines_ShouldReturnAllMedicines() {
         // Arrange
-        List<MedicineResponseDTO> medicines = Arrays.asList(medicineResponse);
+        List<MedicineResponseDTO> medicines = Collections.singletonList(medicineResponse);
         when(medicineService.getAllMedicines()).thenReturn(medicines);
 
         // Act
@@ -153,7 +153,7 @@ class MedicineControllerTest {
     @Test
     void searchMedicinesByName_ShouldReturnMatchingMedicines() {
         // Arrange
-        List<MedicineResponseDTO> medicines = Arrays.asList(medicineResponse);
+        List<MedicineResponseDTO> medicines = Collections.singletonList(medicineResponse);
         when(medicineService.searchMedicinesByName("Para")).thenReturn(medicines);
 
         // Act

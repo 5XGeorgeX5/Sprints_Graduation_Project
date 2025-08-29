@@ -1,9 +1,9 @@
 package com.team5.graduation_project.Service;
 
-import com.team5.graduation_project.DTOs.Request.MedicineRequestDTO;
 import com.team5.graduation_project.DTOs.Request.MedicineOrderRequestDTO;
-import com.team5.graduation_project.DTOs.Response.MedicineResponseDTO;
+import com.team5.graduation_project.DTOs.Request.MedicineRequestDTO;
 import com.team5.graduation_project.DTOs.Response.MedicineOrderResponseDTO;
+import com.team5.graduation_project.DTOs.Response.MedicineResponseDTO;
 import com.team5.graduation_project.DTOs.Response.MedicineStockResponseDTO;
 import com.team5.graduation_project.Exceptions.AlreadyExists;
 import com.team5.graduation_project.Exceptions.ResourceNotFound;
@@ -17,12 +17,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -142,7 +142,7 @@ class MedicineServiceTest {
 
     @Test
     void getAllMedicines_ShouldReturnAllMedicines() {
-        List<Medicine> medicines = Arrays.asList(medicine);
+        List<Medicine> medicines = Collections.singletonList(medicine);
         when(medicineRepository.findAll()).thenReturn(medicines);
         when(dtoMapper.toMedicineResponseDTO(medicine)).thenReturn(medicineResponse);
 
@@ -173,7 +173,7 @@ class MedicineServiceTest {
 
     @Test
     void searchMedicinesByName_ShouldReturnMatchingMedicines() {
-        List<Medicine> medicines = Arrays.asList(medicine);
+        List<Medicine> medicines = Collections.singletonList(medicine);
         when(medicineRepository.findByNameContainingIgnoreCase("Para")).thenReturn(medicines);
         when(dtoMapper.toMedicineResponseDTO(medicine)).thenReturn(medicineResponse);
 
@@ -206,8 +206,8 @@ class MedicineServiceTest {
     @Test
     void deleteMedicine_WithValidId_ShouldDeleteMedicine() {
         when(medicineRepository.existsById(1L)).thenReturn(true);
-        when(medicineOrderRepository.findByMedicineId(1L)).thenReturn(Arrays.asList());
-        when(medicineStockRepository.findByMedicineId(1L)).thenReturn(Arrays.asList());
+        when(medicineOrderRepository.findByMedicineId(1L)).thenReturn(List.of());
+        when(medicineStockRepository.findByMedicineId(1L)).thenReturn(List.of());
 
         medicineService.deleteMedicine(1L);
 
@@ -217,7 +217,7 @@ class MedicineServiceTest {
     @Test
     void deleteMedicine_WithExistingOrders_ShouldThrowIllegalArgumentException() {
         when(medicineRepository.existsById(1L)).thenReturn(true);
-        when(medicineOrderRepository.findByMedicineId(1L)).thenReturn(Arrays.asList(medicineOrder));
+        when(medicineOrderRepository.findByMedicineId(1L)).thenReturn(Collections.singletonList(medicineOrder));
 
         assertThrows(IllegalArgumentException.class, () -> medicineService.deleteMedicine(1L));
         verify(medicineRepository, never()).deleteById(1L);
@@ -232,7 +232,7 @@ class MedicineServiceTest {
 
     @Test
     void getAvailableMedicines_ShouldReturnAvailableStock() {
-        List<MedicineStock> stocks = Arrays.asList(medicineStock);
+        List<MedicineStock> stocks = Collections.singletonList(medicineStock);
         when(medicineStockRepository.findAvailableStocks()).thenReturn(stocks);
         when(dtoMapper.toMedicineStockResponseDTO(medicineStock)).thenReturn(stockResponse);
 
@@ -245,7 +245,7 @@ class MedicineServiceTest {
     @Test
     void getAvailableMedicinesByPharmacy_WithValidPharmacyId_ShouldReturnPharmacyStock() {
         medicineStock.setQuantity(10); // Available quantity
-        List<MedicineStock> stocks = Arrays.asList(medicineStock);
+        List<MedicineStock> stocks = List.of(medicineStock);
         when(pharmacyRepository.existsById(1L)).thenReturn(true);
         when(medicineStockRepository.findByPharmacyId(1L)).thenReturn(stocks);
         when(dtoMapper.toMedicineStockResponseDTO(medicineStock)).thenReturn(stockResponse);
@@ -295,7 +295,7 @@ class MedicineServiceTest {
 
     @Test
     void getPatientOrders_WithValidPatientId_ShouldReturnOrders() {
-        List<MedicineOrder> orders = Arrays.asList(medicineOrder);
+        List<MedicineOrder> orders = Collections.singletonList(medicineOrder);
         when(patientRepository.existsById(1L)).thenReturn(true);
         when(medicineOrderRepository.findByPatientId(1L)).thenReturn(orders);
         when(dtoMapper.toMedicineOrderResponseDTO(medicineOrder)).thenReturn(orderResponse);
@@ -308,7 +308,7 @@ class MedicineServiceTest {
 
     @Test
     void getPharmacyOrders_WithValidPharmacyId_ShouldReturnOrders() {
-        List<MedicineOrder> orders = Arrays.asList(medicineOrder);
+        List<MedicineOrder> orders = Collections.singletonList(medicineOrder);
         when(pharmacyRepository.existsById(1L)).thenReturn(true);
         when(medicineOrderRepository.findByPharmacyId(1L)).thenReturn(orders);
         when(dtoMapper.toMedicineOrderResponseDTO(medicineOrder)).thenReturn(orderResponse);

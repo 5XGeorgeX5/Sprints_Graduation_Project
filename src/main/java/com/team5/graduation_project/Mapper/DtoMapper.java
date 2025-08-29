@@ -33,6 +33,7 @@ public class DtoMapper {
     public PharmacyResponseDTO toPharmacyResponseDTO(Pharmacy pharmacy) {
         return modelMapper.map(pharmacy, PharmacyResponseDTO.class);
     }
+
     public AppointmentResponseDTO toAppointmentResponseDTO(Appointment appointment) {
         return modelMapper.map(appointment, AppointmentResponseDTO.class);
     }

@@ -25,7 +25,8 @@ public class Doctor extends BaseEntity {
 
     private LocalTime startShift;
     private LocalTime endShift;
-    private Integer appointmentDuration;
+    @Column(nullable = false)
+    private Integer appointmentDuration = 30;
 
     @OneToMany(mappedBy = "doctor")
     private List<Appointment> appointments;

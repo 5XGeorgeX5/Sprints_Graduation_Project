@@ -10,7 +10,6 @@ import com.team5.graduation_project.Repository.AppointmentRepository;
 import com.team5.graduation_project.Repository.DoctorRepository;
 import com.team5.graduation_project.Repository.PatientRepository;
 import com.team5.graduation_project.Service.Appointment.AppointmentService;
-import com.team5.graduation_project.Service.Appointment.IAppointmentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,10 +23,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.*;
 
@@ -188,7 +187,7 @@ class AppointmentServiceTest {
         when(doctorRepository.findById(1L)).thenReturn(Optional.of(doctor));
         when(appointmentRepository.findByDoctorIdAndAppointmentTimeBetween(
                 eq(1L), any(LocalDateTime.class), any(LocalDateTime.class)))
-                .thenReturn(Arrays.asList(conflictingAppointment));
+                .thenReturn(List.of(conflictingAppointment));
 
         // Act & Assert
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
@@ -362,7 +361,7 @@ class AppointmentServiceTest {
         when(doctorRepository.findById(1L)).thenReturn(Optional.of(doctor));
         when(appointmentRepository.findByDoctorIdAndAppointmentTimeBetween(
                 eq(1L), any(LocalDateTime.class), any(LocalDateTime.class)))
-                .thenReturn(Arrays.asList(conflictingAppointment));
+                .thenReturn(List.of(conflictingAppointment));
 
         // Act & Assert
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
@@ -384,7 +383,7 @@ class AppointmentServiceTest {
         when(doctorRepository.findById(1L)).thenReturn(Optional.of(doctor));
         when(appointmentRepository.findByDoctorIdAndAppointmentTimeBetween(
                 eq(1L), any(LocalDateTime.class), any(LocalDateTime.class)))
-                .thenReturn(Arrays.asList(sameAppointment)); // Same appointment found, should be filtered out
+                .thenReturn(List.of(sameAppointment)); // Same appointment found, should be filtered out
         when(appointmentRepository.save(appointment)).thenReturn(appointment);
         when(mapper.toAppointmentResponseDTO(appointment)).thenReturn(responseDTO);
 
