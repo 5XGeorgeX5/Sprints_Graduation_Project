@@ -14,10 +14,15 @@ import java.util.List;
 @Repository
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
-    @Query("SELECT TIME(a.appointmentTime) FROM Appointment a " +
-            "WHERE a.doctor.id = :doctorId AND DATE(a.appointmentTime) = :date " +
+    @Query("SELECT a.appointmentTime FROM Appointment a " +
+            "WHERE a.doctor.id = :doctorId " +
+            "AND a.appointmentTime >= :startOfDay " +
+            "AND a.appointmentTime < :endOfDay " +
             "ORDER BY a.appointmentTime")
-    List<LocalTime> getBookedSlots(@Param("doctorId") Long doctorId, @Param("date") LocalDate date);
+    List<LocalDateTime> getBookedSlots(@Param("doctorId") Long doctorId,
+                                       @Param("startOfDay") LocalDateTime startOfDay,
+                                       @Param("endOfDay") LocalDateTime endOfDay);
+
 
     List<Appointment> findByPatientId(Long patientId);
 
