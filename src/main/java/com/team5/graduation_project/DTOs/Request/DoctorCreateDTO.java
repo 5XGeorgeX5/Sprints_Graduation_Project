@@ -25,5 +25,5 @@ public class DoctorCreateDTO {
     private LocalTime endShift;
 
     @Min(1)
-    private Integer appointmentDuration;
+    private Integer appointmentDuration = 30;
 }

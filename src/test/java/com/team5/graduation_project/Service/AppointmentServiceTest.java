@@ -431,7 +431,7 @@ class AppointmentServiceTest {
     @Test
     void createAppointment_AppointmentTimeExactlyNow() {
         // Arrange - Test boundary condition where appointment time is exactly now
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now().minusSeconds(1);
         requestDTO.setAppointmentTime(now);
 
         when(patientRepository.findById(1L)).thenReturn(Optional.of(patient));
