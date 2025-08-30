@@ -12,6 +12,7 @@ import com.team5.graduation_project.Repository.DoctorRepository;
 import com.team5.graduation_project.Repository.PatientRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -42,10 +43,13 @@ public class AppointmentService implements IAppointmentService {
         if (appointmentTime == null || appointmentTime.isBefore(LocalDateTime.now())) {
             throw new ResponseStatusException(BAD_REQUEST, "Appointment time must be in the future");
         }
-        List<Appointment> conflictingAppointments = appointmentRepository
-                .findByDoctorIdAndAppointmentTimeBetween(doctor.getId(), appointmentTime.minusMinutes(doctor.getAppointmentDuration()), appointmentTime.plusMinutes(doctor.getAppointmentDuration()));
-        if (!conflictingAppointments.isEmpty()) {
-            throw new ResponseStatusException(CONFLICT, "Doctor is not available at the requested time");
+        List<Appointment> conflicts = appointmentRepository.findConflictingAppointments(
+                doctor.getId(),appointmentTime,
+                appointmentTime.plusMinutes(doctor.getAppointmentDuration())
+        );
+
+        if (!conflicts.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Doctor is not available at the requested time");
         }
         if (doctor.getStartShift() != null && doctor.getEndShift() != null) {
             if (appointmentTime.toLocalTime().isBefore(doctor.getStartShift()) || appointmentTime.toLocalTime().isAfter(doctor.getEndShift())) {

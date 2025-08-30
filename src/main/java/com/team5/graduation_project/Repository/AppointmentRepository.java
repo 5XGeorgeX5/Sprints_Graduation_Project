@@ -27,4 +27,15 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     List<Appointment> findByDoctorId(Long doctorId);
 
     List<Appointment> findByDoctorIdAndAppointmentTimeBetween(Long doctorId, LocalDateTime start, LocalDateTime end);
+
+    @Query("SELECT a FROM Appointment a " +
+            "WHERE a.doctor.id = :doctorId " +
+            "AND a.appointmentTime < :requestedEnd " +
+            "AND a.appointmentTime + a.doctor.appointmentDuration * 1 MINUTE > :requestedStart")
+    List<Appointment> findConflictingAppointments(
+            @Param("doctorId") Long doctorId,
+            @Param("requestedStart") LocalDateTime requestedStart,
+            @Param("requestedEnd") LocalDateTime requestedEnd
+    );
+
 }
