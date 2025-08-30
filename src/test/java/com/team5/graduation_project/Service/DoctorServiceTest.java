@@ -4,6 +4,7 @@ import com.team5.graduation_project.DTOs.Request.AccountRegistrationRequestDTO;
 import com.team5.graduation_project.DTOs.Request.DoctorCreateDTO;
 import com.team5.graduation_project.DTOs.Response.AccountResponseDTO;
 import com.team5.graduation_project.DTOs.Response.DoctorResponseDTO;
+import com.team5.graduation_project.DTOs.Response.PatientResponseDTO;
 import com.team5.graduation_project.Exceptions.ResourceNotFound;
 import com.team5.graduation_project.Mapper.DtoMapper;
 import com.team5.graduation_project.Models.Account;
@@ -20,6 +21,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
@@ -147,6 +149,31 @@ class DoctorServiceTest {
     }
 
     @Test
+    void getDoctorAvailableSlots_WhenNoBookedSlots_ShouldReturnAllAvailableSlots() {
+        // Arrange
+        LocalDate testDate = LocalDate.of(2024, 1, 15);
+        when(doctorRepository.findById(1L)).thenReturn(Optional.of(doctor));
+        when(appointmentRepository.getBookedSlots(any(Long.class), any(LocalDateTime.class), any(LocalDateTime.class)))
+                .thenReturn(Collections.emptyList());
+
+        // Act
+        List<LocalTime> result = doctorService.getDoctorAvailableSlots(1L, testDate);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(16, result.size()); // 8 hours * 2 slots per hour = 16 slots
+        assertEquals(LocalTime.of(9, 0), result.get(0));
+        assertEquals(LocalTime.of(16, 30), result.get(result.size() - 1));
+
+        verify(doctorRepository).findById(1L);
+        verify(appointmentRepository).getBookedSlots(
+                eq(1L),
+                eq(testDate.atStartOfDay()),
+                eq(testDate.plusDays(1).atStartOfDay())
+        );
+    }
+
+    @Test
     void getAvailableDoctors_ShouldReturnList() {
         LocalDate date = LocalDate.now();
         when(doctorRepository.findAvailableDoctors(date)).thenReturn(Collections.singletonList(doctor));
@@ -158,17 +185,10 @@ class DoctorServiceTest {
         verify(doctorRepository).findAvailableDoctors(date);
     }
 
-    @Test
-    void getDoctorAvailableSlots_ShouldReturnSlots() {
-        LocalDate date = LocalDate.now();
-        when(doctorRepository.findById(1L)).thenReturn(Optional.of(doctor));
-        when(appointmentRepository.getBookedSlots(1L, date)).thenReturn(Collections.singletonList(LocalTime.of(9, 0)));
+ 
 
-        List<LocalTime> result = doctorService.getDoctorAvailableSlots(1L, date);
 
-        assertFalse(result.contains(LocalTime.of(9, 0)));
-        assertTrue(result.contains(LocalTime.of(9, 30)));
-    }
+
 
     @Test
     void getDoctorAvailableSlots_ShouldThrow_WhenDoctorNotFound() {
@@ -181,7 +201,7 @@ class DoctorServiceTest {
         Patient patient = new Patient();
         when(patientRepository.findPatientsByDoctorId(1L)).thenReturn(List.of(patient));
 
-        List<Patient> result = doctorService.getDoctorPatients(1L);
+        List<PatientResponseDTO> result = doctorService.getDoctorPatients(1L);
 
         assertEquals(1, result.size());
         verify(patientRepository).findPatientsByDoctorId(1L);

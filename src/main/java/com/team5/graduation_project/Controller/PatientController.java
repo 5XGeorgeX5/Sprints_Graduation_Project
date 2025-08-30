@@ -2,6 +2,7 @@ package com.team5.graduation_project.Controller;
 
 import com.team5.graduation_project.DTOs.Request.AccountRegistrationRequestDTO;
 import com.team5.graduation_project.DTOs.Response.AccountResponseDTO;
+import com.team5.graduation_project.DTOs.Response.PatientResponseDTO;
 import com.team5.graduation_project.DTOs.Response.PrescriptionResponseDTO;
 import com.team5.graduation_project.Models.Patient;
 import com.team5.graduation_project.Response.BaseResponse;
@@ -55,9 +56,9 @@ public class PatientController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{doctorId}")
+    @GetMapping("/doctor/{doctorId}")
     public ResponseEntity<BaseResponse> getDoctorPatients(@PathVariable Long doctorId) {
-        List<Patient> patients = doctorService.getDoctorPatients(doctorId);
+        List<PatientResponseDTO> patients = doctorService.getDoctorPatients(doctorId);
         return ResponseEntity.ok(new BaseResponse("Doctor patients retrieved successfully", patients));
     }
 

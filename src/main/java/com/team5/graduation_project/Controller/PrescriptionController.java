@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class PrescriptionController {
 
-    private PrescriptionService prescriptionService;
+    private final PrescriptionService prescriptionService;
 
-    @PostMapping("/{id}")
+    @PostMapping("/{doctor_id}")
     @PreAuthorize(("hasAuthority('DOCTOR')"))
-    public ResponseEntity<BaseResponse> createPrescription(@PathVariable Long id, @RequestBody PrescriptionRequestDTO prescriptionRequest) {
-        PrescriptionResponseDTO prescription = prescriptionService.createPrescription(id, prescriptionRequest);
+    public ResponseEntity<BaseResponse> createPrescription(@PathVariable Long doctor_id, @RequestBody PrescriptionRequestDTO prescriptionRequest) {
+        PrescriptionResponseDTO prescription = prescriptionService.createPrescription(doctor_id, prescriptionRequest);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new BaseResponse("Prescription created successfully", prescription));

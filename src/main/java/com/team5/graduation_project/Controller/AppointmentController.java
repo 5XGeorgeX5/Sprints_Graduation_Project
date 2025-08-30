@@ -21,7 +21,6 @@ public class AppointmentController {
 
 
     @PostMapping
-    @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<AppointmentResponseDTO> createAppointment(
             @AuthenticationPrincipal Account patientAccount,
             @Valid @RequestBody AppointmentRequestDTO requestDTO) {
@@ -55,9 +54,9 @@ public class AppointmentController {
     public ResponseEntity<BaseResponse> addFollowUpNote(
             @PathVariable Long appointmentId,
             @RequestBody String note) {
-        appointmentService.addFollowupNotes(appointmentId, note);
+        AppointmentResponseDTO dto=appointmentService.addFollowupNotes(appointmentId, note);
         return ResponseEntity.ok(
-                new BaseResponse("Follow-up note added successfully", null)
+                new BaseResponse("Follow-up note added successfully", dto)
         );
     }
 

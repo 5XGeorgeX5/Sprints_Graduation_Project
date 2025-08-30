@@ -4,6 +4,7 @@ import com.team5.graduation_project.DTOs.Request.AccountRegistrationRequestDTO;
 import com.team5.graduation_project.DTOs.Request.DoctorCreateDTO;
 import com.team5.graduation_project.DTOs.Response.AccountResponseDTO;
 import com.team5.graduation_project.DTOs.Response.DoctorResponseDTO;
+import com.team5.graduation_project.DTOs.Response.PatientResponseDTO;
 import com.team5.graduation_project.Exceptions.ResourceNotFound;
 import com.team5.graduation_project.Mapper.DtoMapper;
 import com.team5.graduation_project.Models.Account;
@@ -124,8 +125,14 @@ public class DoctorService implements IDoctorService {
 
 
     @Override
-    public List<Patient> getDoctorPatients(Long id) {
-        return patientRepository.findPatientsByDoctorId(id);
+    public List<PatientResponseDTO> getDoctorPatients(Long id) {
+
+        List<Patient> patients= patientRepository.findPatientsByDoctorId(id);
+        List<PatientResponseDTO> dtos=new ArrayList<>();
+        for(Patient patient:patients){
+            dtos.add(mapper.patientResponseDTO(patient));
+        }
+        return dtos;
     }
 
 

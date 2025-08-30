@@ -2,6 +2,7 @@ package com.team5.graduation_project.Service.Appointment;
 
 import com.team5.graduation_project.DTOs.Request.AppointmentRequestDTO;
 import com.team5.graduation_project.DTOs.Response.AppointmentResponseDTO;
+import com.team5.graduation_project.Exceptions.ResourceNotFound;
 import com.team5.graduation_project.Mapper.DtoMapper;
 import com.team5.graduation_project.Models.Appointment;
 import com.team5.graduation_project.Models.Doctor;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.*;
@@ -107,7 +109,11 @@ public class AppointmentService implements IAppointmentService {
     public AppointmentResponseDTO addFollowupNotes(Long id, String note) {
 
         Appointment appointment = appointmentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Appointment not found"));
+                .orElseThrow(() -> new ResourceNotFound("Appointment not found"));
+
+        if (appointment.getFollowUpNotes() == null) {
+            appointment.setFollowUpNotes(new ArrayList<>());
+        }
 
         appointment.getFollowUpNotes().add(note);
         appointmentRepository.save(appointment);

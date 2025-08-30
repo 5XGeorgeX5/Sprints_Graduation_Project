@@ -4,6 +4,7 @@ import com.team5.graduation_project.DTOs.Request.AccountRegistrationRequestDTO;
 import com.team5.graduation_project.DTOs.Request.DoctorCreateDTO;
 import com.team5.graduation_project.DTOs.Response.AccountResponseDTO;
 import com.team5.graduation_project.DTOs.Response.DoctorResponseDTO;
+import com.team5.graduation_project.DTOs.Response.PatientResponseDTO;
 import com.team5.graduation_project.Models.Patient;
 
 import java.time.LocalDate;
@@ -25,7 +26,7 @@ public interface IDoctorService {
 
     List<LocalTime> getDoctorAvailableSlots(Long id, LocalDate date);
 
-    List<Patient> getDoctorPatients(Long id);
+    List<PatientResponseDTO> getDoctorPatients(Long id);
 
 
 }
