@@ -15,6 +15,7 @@ import com.team5.graduation_project.Repository.DoctorRepository;
 import com.team5.graduation_project.Repository.PatientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -34,6 +35,7 @@ public class DoctorService implements IDoctorService {
     private final PatientRepository patientRepository;
 
     @Override
+    @Transactional
     public DoctorResponseDTO register(DoctorCreateDTO dto) {
         Account account = accountService.createAccount(dto.getAccount(), Role.DOCTOR);
 

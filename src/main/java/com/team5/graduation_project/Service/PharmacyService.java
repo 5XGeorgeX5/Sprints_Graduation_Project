@@ -13,6 +13,7 @@ import com.team5.graduation_project.Repository.AccountRepository;
 import com.team5.graduation_project.Repository.PharmacyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ public class PharmacyService implements IPharmacyService {
     private final AccountRepository accountRepository;
 
     @Override
+    @Transactional
     public PharmacyResponseDTO register(PharmacyCreateDTO dto) {
         Account account = accountService.createAccount(dto.getAccount(), Role.PHARMACY);
 

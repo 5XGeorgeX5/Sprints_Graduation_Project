@@ -11,6 +11,7 @@ import com.team5.graduation_project.Repository.PatientRepository;
 import com.team5.graduation_project.Service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class PatientService implements IPatientService {
     private final AppointmentRepository appointmentRepository;
 
     @Override
+    @Transactional
     public AccountResponseDTO register(AccountRegistrationRequestDTO dto) {
         Account account = accountService.createAccount(dto, Role.PATIENT);
 
