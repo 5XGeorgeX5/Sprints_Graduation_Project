@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -87,20 +88,38 @@ public class DoctorService implements IDoctorService {
     }
 
 
+
     @Override
     public List<LocalTime> getDoctorAvailableSlots(Long id, LocalDate date) {
         Doctor doctor = doctorRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFound("Doctor Not Found"));
-        List<LocalTime> bookedSlots = appointmentRepository.getBookedSlots(id, date);
 
 
-        List<LocalTime> allSlots = generateTimeSlots(doctor.getStartShift(), doctor.getEndShift(), doctor.getAppointmentDuration());
+        LocalDateTime startOfDay = date.atStartOfDay();
+        LocalDateTime endOfDay = date.plusDays(1).atStartOfDay();
+
+
+        List<LocalDateTime> bookedDateTimes =
+                appointmentRepository.getBookedSlots(id, startOfDay, endOfDay);
+
+
+        List<LocalTime> bookedSlots = bookedDateTimes.stream()
+                .map(LocalDateTime::toLocalTime)
+                .toList();
+
+
+        List<LocalTime> allSlots = generateTimeSlots(
+                doctor.getStartShift(),
+                doctor.getEndShift(),
+                doctor.getAppointmentDuration()
+        );
 
 
         allSlots.removeAll(bookedSlots);
 
         return allSlots;
     }
+
 
     @Override
     public List<Patient> getDoctorPatients(Long id) {
