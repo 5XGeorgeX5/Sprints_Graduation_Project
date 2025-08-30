@@ -162,7 +162,9 @@ class DoctorServiceTest {
     void getDoctorAvailableSlots_ShouldReturnSlots() {
         LocalDate date = LocalDate.now();
         when(doctorRepository.findById(1L)).thenReturn(Optional.of(doctor));
-        when(appointmentRepository.getBookedSlots(1L, date)).thenReturn(Collections.singletonList(LocalTime.of(9, 0)));
+        when(appointmentRepository.getBookedSlots(1L, date.atStartOfDay(), date.plusDays(1).atStartOfDay())).thenReturn(
+                List.of(date.atTime(9, 0))
+        );
 
         List<LocalTime> result = doctorService.getDoctorAvailableSlots(1L, date);
 
