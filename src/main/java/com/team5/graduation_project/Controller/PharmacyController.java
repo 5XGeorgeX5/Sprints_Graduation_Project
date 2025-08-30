@@ -7,7 +7,6 @@ import com.team5.graduation_project.Response.BaseResponse;
 import com.team5.graduation_project.Service.PharmacyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;

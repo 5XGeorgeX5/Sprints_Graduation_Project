@@ -3,7 +3,6 @@ package com.team5.graduation_project.Controller;
 import com.team5.graduation_project.DTOs.Request.AppointmentRequestDTO;
 import com.team5.graduation_project.DTOs.Response.AppointmentResponseDTO;
 import com.team5.graduation_project.Models.Account;
-import com.team5.graduation_project.Service.Appointment.IAppointmentService;
 import com.team5.graduation_project.Response.BaseResponse;
 import com.team5.graduation_project.Service.Appointment.AppointmentService;
 import jakarta.validation.Valid;
@@ -19,8 +18,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AppointmentController {
     private final AppointmentService appointmentService;
-
-
 
 
     @PostMapping

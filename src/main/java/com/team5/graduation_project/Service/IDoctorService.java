@@ -20,6 +20,7 @@ public interface IDoctorService {
     AccountResponseDTO update(Long id, AccountRegistrationRequestDTO dto);
 
     void delete(Long id);
+
     List<DoctorResponseDTO> getAvailableDoctors(LocalDate date);
 
     List<LocalTime> getDoctorAvailableSlots(Long id, LocalDate date);

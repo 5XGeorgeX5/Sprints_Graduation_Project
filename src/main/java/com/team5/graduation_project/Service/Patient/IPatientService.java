@@ -18,7 +18,9 @@ public interface IPatientService {
     AccountResponseDTO updatePatient(Long id, AccountRegistrationRequestDTO dto);
 
     void deletePatient(Long id);
+
     List<PrescriptionResponseDTO> getPatientMedicalHistory(Long id);
+
     List<List<String>> getPatientPreviousConsultations(Long id);
 }
 

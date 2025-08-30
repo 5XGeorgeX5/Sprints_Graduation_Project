@@ -10,7 +10,10 @@ import java.util.List;
 public interface IPharmacyService {
 
     PharmacyResponseDTO register(PharmacyCreateDTO dto);
+
     List<PharmacyResponseDTO> getAllRegisteredPharmacies();
+
     AccountResponseDTO updatePharmacy(Long id, AccountRegistrationRequestDTO dto);
+
     void deletePharmacy(Long id);
 }

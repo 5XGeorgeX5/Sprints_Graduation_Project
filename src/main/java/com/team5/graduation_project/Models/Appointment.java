@@ -15,12 +15,10 @@ import java.util.List;
 @Builder
 public class Appointment extends BaseEntity {
 
+    List<String> followUpNotes;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    List<String> followUpNotes;
-
     @ManyToOne
     @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;

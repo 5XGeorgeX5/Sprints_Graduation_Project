@@ -38,7 +38,6 @@ public class PrescriptionService {
                 .orElseThrow(() -> new ResourceNotFound("Medicine not found"));
 
 
-
         Prescription prescription = new Prescription();
         prescription.setPatient(patient);
         prescription.setMedicine(medicine);
@@ -51,7 +50,7 @@ public class PrescriptionService {
         return mapper.toPrescriptionResponseDTO(prescription);
     }
 
-    public PrescriptionResponseDTO getDoctorPresciprion(Long id){
+    public PrescriptionResponseDTO getDoctorPresciprion(Long id) {
         Prescription prescription = prescriptionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFound("Prescription Not Found"));
 

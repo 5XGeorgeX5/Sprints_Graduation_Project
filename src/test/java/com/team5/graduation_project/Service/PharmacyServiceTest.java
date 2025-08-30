@@ -7,7 +7,6 @@ import com.team5.graduation_project.DTOs.Response.PharmacyResponseDTO;
 import com.team5.graduation_project.Exceptions.ResourceNotFound;
 import com.team5.graduation_project.Mapper.DtoMapper;
 import com.team5.graduation_project.Models.Account;
-import com.team5.graduation_project.Models.Doctor;
 import com.team5.graduation_project.Models.Pharmacy;
 import com.team5.graduation_project.Models.Role;
 import com.team5.graduation_project.Repository.AccountRepository;
@@ -17,9 +16,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,10 +66,10 @@ class PharmacyServiceTest {
         pharmacy.setAddress("123 Main St");
 
         createDTO = new PharmacyCreateDTO();
-        createDTO.setAccount(new AccountRegistrationRequestDTO("pharma1","pharma1@example.com","pass","Pharma One"));
+        createDTO.setAccount(new AccountRegistrationRequestDTO("pharma1", "pharma1@example.com", "pass", "Pharma One"));
         createDTO.setAddress("123 Main St");
 
-        updateDTO = new AccountRegistrationRequestDTO("pharma1","pharma1@example.com","pass","Pharma One");
+        updateDTO = new AccountRegistrationRequestDTO("pharma1", "pharma1@example.com", "pass", "Pharma One");
 
         accountResponseDTO = new AccountResponseDTO(1L, "pharma1", "pharma1@example.com", "Pharma One", Role.PHARMACY);
 
@@ -98,7 +97,7 @@ class PharmacyServiceTest {
 
     @Test
     void getAllRegisteredPharmacies_ShouldReturnList() {
-        when(pharmacyRepository.findAll()).thenReturn(Arrays.asList(pharmacy));
+        when(pharmacyRepository.findAll()).thenReturn(Collections.singletonList(pharmacy));
         when(mapper.toPharmacyResponseDTO(pharmacy)).thenReturn(pharmacyResponseDTO);
 
         List<PharmacyResponseDTO> result = pharmacyService.getAllRegisteredPharmacies();

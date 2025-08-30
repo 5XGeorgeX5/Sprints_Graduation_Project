@@ -77,11 +77,11 @@ public class PatientService implements IPatientService {
 
     @Override
     public List<PrescriptionResponseDTO> getPatientMedicalHistory(Long id) {
-        Patient patient=patientRepository.findById(id)
-                .orElseThrow(()-> new ResourceNotFound("Patient not found"));
-        List<Prescription> prescriptions=patient.getPrescriptions();
-        List<PrescriptionResponseDTO> dtos=new ArrayList<>();
-        for(Prescription prescription:prescriptions){
+        Patient patient = patientRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFound("Patient not found"));
+        List<Prescription> prescriptions = patient.getPrescriptions();
+        List<PrescriptionResponseDTO> dtos = new ArrayList<>();
+        for (Prescription prescription : prescriptions) {
             dtos.add(mapper.toPrescriptionResponseDTO(prescription));
         }
         return dtos;
@@ -89,15 +89,15 @@ public class PatientService implements IPatientService {
 
     @Override
     public List<List<String>> getPatientPreviousConsultations(Long id) {
-       List<Appointment> patientAppointments=appointmentRepository.findByPatientId(id);
-       List<List<String>> consultations=new ArrayList<>();
-    for(Appointment appointment:patientAppointments){
-        List<String> notes = appointment.getFollowUpNotes() != null
-                ? appointment.getFollowUpNotes()
-                : new ArrayList<>();
-        consultations.add(notes);
-    }
-    return consultations;
+        List<Appointment> patientAppointments = appointmentRepository.findByPatientId(id);
+        List<List<String>> consultations = new ArrayList<>();
+        for (Appointment appointment : patientAppointments) {
+            List<String> notes = appointment.getFollowUpNotes() != null
+                    ? appointment.getFollowUpNotes()
+                    : new ArrayList<>();
+            consultations.add(notes);
+        }
+        return consultations;
     }
 
 }

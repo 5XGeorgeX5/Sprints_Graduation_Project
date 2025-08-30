@@ -91,7 +91,7 @@ public class DtoMapper {
 
         return PrescriptionResponseDTO.builder()
                 .id(prescription.getId())
-                .doctorId(prescription.getDoctor().getId() )
+                .doctorId(prescription.getDoctor().getId())
                 .patientId(prescription.getPatient().getId())
                 .medicineId(prescription.getMedicine().getId())
                 .dosage(prescription.getDosage())

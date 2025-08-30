@@ -49,9 +49,9 @@ public class DoctorService implements IDoctorService {
 
     @Override
     public List<DoctorResponseDTO> getAllRegisteredDoctors() {
-        List<Doctor> doctors=doctorRepository.findAll();
-        List<DoctorResponseDTO> dtos=new ArrayList<>();
-        for(Doctor doctor:doctors){
+        List<Doctor> doctors = doctorRepository.findAll();
+        List<DoctorResponseDTO> dtos = new ArrayList<>();
+        for (Doctor doctor : doctors) {
             dtos.add(mapper.toDoctorResponseDTO(doctor));
         }
         return dtos;
@@ -59,8 +59,8 @@ public class DoctorService implements IDoctorService {
 
     @Override
     public AccountResponseDTO update(Long id, AccountRegistrationRequestDTO dto) {
-        Doctor doctor= doctorRepository.findById(id)
-                .orElseThrow(()-> new ResourceNotFound("Doctor doesn't exist"));
+        Doctor doctor = doctorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFound("Doctor doesn't exist"));
 
         Account updatedAccount = accountService.updateAccount(doctor.getAccount().getId(), dto);
 
@@ -69,18 +69,18 @@ public class DoctorService implements IDoctorService {
 
     @Override
     public void delete(Long id) {
-    Doctor doctor=doctorRepository.findById(id)
-            .orElseThrow(()-> new ResourceNotFound("Doctor doesn't exist"));
-    doctorRepository.delete(doctor);
+        Doctor doctor = doctorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFound("Doctor doesn't exist"));
+        doctorRepository.delete(doctor);
 
         accountService.deleteAccount(doctor.getAccount().getId());
     }
 
     @Override
     public List<DoctorResponseDTO> getAvailableDoctors(LocalDate date) {
-        List<Doctor> doctors=doctorRepository.findAvailableDoctors(date);
-        List<DoctorResponseDTO> dtos=new ArrayList<>();
-        for(Doctor doctor:doctors){
+        List<Doctor> doctors = doctorRepository.findAvailableDoctors(date);
+        List<DoctorResponseDTO> dtos = new ArrayList<>();
+        for (Doctor doctor : doctors) {
             dtos.add(mapper.toDoctorResponseDTO(doctor));
         }
         return dtos;
@@ -89,8 +89,8 @@ public class DoctorService implements IDoctorService {
 
     @Override
     public List<LocalTime> getDoctorAvailableSlots(Long id, LocalDate date) {
-        Doctor doctor=doctorRepository.findById(id)
-                .orElseThrow(()-> new ResourceNotFound("Doctor Not Found"));
+        Doctor doctor = doctorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFound("Doctor Not Found"));
         List<LocalTime> bookedSlots = appointmentRepository.getBookedSlots(id, date);
 
 
@@ -124,7 +124,6 @@ public class DoctorService implements IDoctorService {
 
         return slots;
     }
-
 
 
 }

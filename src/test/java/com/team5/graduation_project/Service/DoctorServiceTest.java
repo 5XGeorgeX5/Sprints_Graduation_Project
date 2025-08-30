@@ -18,11 +18,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,17 +70,17 @@ class DoctorServiceTest {
         doctor = new Doctor();
         doctor.setId(1L);
         doctor.setAccount(account);
-        doctor.setStartShift(LocalTime.of(9,0));
-        doctor.setEndShift(LocalTime.of(17,0));
+        doctor.setStartShift(LocalTime.of(9, 0));
+        doctor.setEndShift(LocalTime.of(17, 0));
         doctor.setAppointmentDuration(30);
 
         createDTO = new DoctorCreateDTO();
-        createDTO.setAccount(new AccountRegistrationRequestDTO("doc1","doc1@example.com","pass","Dr. John"));
-        createDTO.setStartShift(LocalTime.of(9,0));
-        createDTO.setEndShift(LocalTime.of(17,0));
+        createDTO.setAccount(new AccountRegistrationRequestDTO("doc1", "doc1@example.com", "pass", "Dr. John"));
+        createDTO.setStartShift(LocalTime.of(9, 0));
+        createDTO.setEndShift(LocalTime.of(17, 0));
         createDTO.setAppointmentDuration(30);
 
-        updateDTO = new AccountRegistrationRequestDTO("doc1","doc1@example.com","pass","Dr. John");
+        updateDTO = new AccountRegistrationRequestDTO("doc1", "doc1@example.com", "pass", "Dr. John");
 
         // Initialize accountResponseDTO first
         accountResponseDTO = new AccountResponseDTO(1L, "doc1", "doc1@example.com", "Dr. John", Role.DOCTOR);
@@ -88,8 +88,8 @@ class DoctorServiceTest {
         // Then assign it to doctorResponseDTO
         doctorResponseDTO = new DoctorResponseDTO();
         doctorResponseDTO.setAccount(accountResponseDTO);
-        doctorResponseDTO.setStartShift(LocalTime.of(9,0));
-        doctorResponseDTO.setEndShift(LocalTime.of(17,0));
+        doctorResponseDTO.setStartShift(LocalTime.of(9, 0));
+        doctorResponseDTO.setEndShift(LocalTime.of(17, 0));
         doctorResponseDTO.setAppointmentDuration(30);
     }
 
@@ -110,7 +110,7 @@ class DoctorServiceTest {
 
     @Test
     void getAllRegisteredDoctors_ShouldReturnList() {
-        when(doctorRepository.findAll()).thenReturn(Arrays.asList(doctor));
+        when(doctorRepository.findAll()).thenReturn(Collections.singletonList(doctor));
         when(mapper.toDoctorResponseDTO(doctor)).thenReturn(doctorResponseDTO);
 
         List<DoctorResponseDTO> result = doctorService.getAllRegisteredDoctors();
@@ -150,7 +150,7 @@ class DoctorServiceTest {
     @Test
     void getAvailableDoctors_ShouldReturnList() {
         LocalDate date = LocalDate.now();
-        when(doctorRepository.findAvailableDoctors(date)).thenReturn(Arrays.asList(doctor));
+        when(doctorRepository.findAvailableDoctors(date)).thenReturn(Collections.singletonList(doctor));
         when(mapper.toDoctorResponseDTO(doctor)).thenReturn(doctorResponseDTO);
 
         List<DoctorResponseDTO> result = doctorService.getAvailableDoctors(date);
@@ -163,12 +163,12 @@ class DoctorServiceTest {
     void getDoctorAvailableSlots_ShouldReturnSlots() {
         LocalDate date = LocalDate.now();
         when(doctorRepository.findById(1L)).thenReturn(Optional.of(doctor));
-        when(appointmentRepository.getBookedSlots(1L, date)).thenReturn(Arrays.asList(LocalTime.of(9,0)));
+        when(appointmentRepository.getBookedSlots(1L, date)).thenReturn(Collections.singletonList(LocalTime.of(9, 0)));
 
         List<LocalTime> result = doctorService.getDoctorAvailableSlots(1L, date);
 
-        assertFalse(result.contains(LocalTime.of(9,0)));
-        assertTrue(result.contains(LocalTime.of(9,30)));
+        assertFalse(result.contains(LocalTime.of(9, 0)));
+        assertTrue(result.contains(LocalTime.of(9, 30)));
     }
 
     @Test
@@ -180,7 +180,7 @@ class DoctorServiceTest {
     @Test
     void getDoctorPatients_ShouldReturnList() {
         Patient patient = new Patient();
-        when(patientRepository.findPatientsByDoctorId(1L)).thenReturn(Arrays.asList(patient));
+        when(patientRepository.findPatientsByDoctorId(1L)).thenReturn(List.of(patient));
 
         List<Patient> result = doctorService.getDoctorPatients(1L);
 

@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 public interface DoctorRepository extends JpaRepository<Doctor, Long> {
@@ -18,8 +17,6 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
             " WHERE a.doctor_id = d.id AND DATE(a.appointment_time) = :date)",
             nativeQuery = true)
     List<Doctor> findAvailableDoctors(@Param("date") LocalDate date);
-
-
 
 
 }

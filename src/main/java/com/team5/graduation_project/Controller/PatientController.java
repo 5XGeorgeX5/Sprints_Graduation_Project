@@ -1,25 +1,17 @@
 package com.team5.graduation_project.Controller;
 
 import com.team5.graduation_project.DTOs.Request.AccountRegistrationRequestDTO;
-import com.team5.graduation_project.DTOs.Request.DoctorCreateDTO;
 import com.team5.graduation_project.DTOs.Response.AccountResponseDTO;
-import com.team5.graduation_project.DTOs.Response.DoctorResponseDTO;
 import com.team5.graduation_project.DTOs.Response.PrescriptionResponseDTO;
 import com.team5.graduation_project.Models.Patient;
 import com.team5.graduation_project.Response.BaseResponse;
 import com.team5.graduation_project.Service.IDoctorService;
 import com.team5.graduation_project.Service.Patient.IPatientService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 

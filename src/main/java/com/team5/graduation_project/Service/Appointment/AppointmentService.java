@@ -106,13 +106,13 @@ public class AppointmentService implements IAppointmentService {
     @Override
     public AppointmentResponseDTO addFollowupNotes(Long id, String note) {
 
-            Appointment appointment = appointmentRepository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("Appointment not found"));
+        Appointment appointment = appointmentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Appointment not found"));
 
-            appointment.getFollowUpNotes().add(note);
-            appointmentRepository.save(appointment);
+        appointment.getFollowUpNotes().add(note);
+        appointmentRepository.save(appointment);
 
-            return mapper.toAppointmentResponseDTO(appointment);
-        }
+        return mapper.toAppointmentResponseDTO(appointment);
     }
+}
 

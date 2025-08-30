@@ -3,9 +3,7 @@ package com.team5.graduation_project.Controller;
 import com.team5.graduation_project.DTOs.Request.AccountRegistrationRequestDTO;
 import com.team5.graduation_project.DTOs.Response.AccountResponseDTO;
 import com.team5.graduation_project.DTOs.Response.DoctorResponseDTO;
-import com.team5.graduation_project.Models.Patient;
 import com.team5.graduation_project.Response.BaseResponse;
-import com.team5.graduation_project.Service.DoctorService;
 import com.team5.graduation_project.Service.IDoctorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,13 +21,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DoctorController {
 
- private final IDoctorService doctorService;
+    private final IDoctorService doctorService;
 
     @GetMapping("/all")
     @PreAuthorize(("hasAuthority('ADMIN')"))
     public ResponseEntity<BaseResponse> getAllRegisteredDoctors() {
-        List<DoctorResponseDTO> doctors= doctorService.getAllRegisteredDoctors();
-        return ResponseEntity.ok(new BaseResponse("Registered doctors retrieved successfully",doctors));
+        List<DoctorResponseDTO> doctors = doctorService.getAllRegisteredDoctors();
+        return ResponseEntity.ok(new BaseResponse("Registered doctors retrieved successfully", doctors));
     }
 
     @PutMapping("/update/{doctorId}")
@@ -55,13 +53,10 @@ public class DoctorController {
 
     @GetMapping("/available-slots/{doctorId}")
     public ResponseEntity<BaseResponse> getDoctorAvailableSlots(@PathVariable Long doctorId,
-                                                                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date)
-    {
+                                                                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         List<LocalTime> availableSlots = doctorService.getDoctorAvailableSlots(doctorId, date);
         return ResponseEntity.ok(new BaseResponse("Doctor available slots retrieved successfully", availableSlots));
     }
-
-
 
 
 }

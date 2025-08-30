@@ -4,7 +4,6 @@ import com.team5.graduation_project.DTOs.Request.PrescriptionRequestDTO;
 import com.team5.graduation_project.DTOs.Response.PrescriptionResponseDTO;
 import com.team5.graduation_project.Response.BaseResponse;
 import com.team5.graduation_project.Service.PrescriptionService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +19,8 @@ public class PrescriptionController {
 
     @PostMapping("/{id}")
     @PreAuthorize(("hasAuthority('DOCTOR')"))
-    public ResponseEntity<BaseResponse> createPrescription(@PathVariable Long id,@RequestBody PrescriptionRequestDTO prescriptionRequest) {
-        PrescriptionResponseDTO prescription = prescriptionService.createPrescription(id,prescriptionRequest);
+    public ResponseEntity<BaseResponse> createPrescription(@PathVariable Long id, @RequestBody PrescriptionRequestDTO prescriptionRequest) {
+        PrescriptionResponseDTO prescription = prescriptionService.createPrescription(id, prescriptionRequest);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new BaseResponse("Prescription created successfully", prescription));
