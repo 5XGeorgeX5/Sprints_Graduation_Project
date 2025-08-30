@@ -91,7 +91,6 @@ public class DoctorService implements IDoctorService {
     }
 
 
-
     @Override
     public List<LocalTime> getDoctorAvailableSlots(Long id, LocalDate date) {
         Doctor doctor = doctorRepository.findById(id)
