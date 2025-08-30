@@ -18,7 +18,7 @@ public class PrescriptionController {
     private PrescriptionService prescriptionService;
 
     @PostMapping("/{id}")
-    @PreAuthorize(("hasAuthority('DOCTOR')"))
+    @PreAuthorize("hasAuthority('DOCTOR')")
     public ResponseEntity<BaseResponse> createPrescription(@PathVariable Long id, @RequestBody PrescriptionRequestDTO prescriptionRequest) {
         PrescriptionResponseDTO prescription = prescriptionService.createPrescription(id, prescriptionRequest);
         return ResponseEntity

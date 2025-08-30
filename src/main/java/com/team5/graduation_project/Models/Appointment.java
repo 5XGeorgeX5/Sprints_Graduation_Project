@@ -15,7 +15,6 @@ import java.util.List;
 @Builder
 public class Appointment extends BaseEntity {
 
-    List<String> followUpNotes;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,6 +25,9 @@ public class Appointment extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "doctor_id", nullable = false)
     private Doctor doctor;
+
+    @ElementCollection
+    List<String> followUpNotes;
 
     private LocalDateTime appointmentTime;
 }

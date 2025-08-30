@@ -23,11 +23,6 @@ public class PatientController {
     private final IPatientService patientService;
     private final IDoctorService doctorService;
 
-    @PostMapping
-    public ResponseEntity<AccountResponseDTO> registerPatient(@RequestBody AccountRegistrationRequestDTO dto) {
-        return ResponseEntity.ok(patientService.register(dto));
-    }
-
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<AccountResponseDTO>> getAllPatients() {
