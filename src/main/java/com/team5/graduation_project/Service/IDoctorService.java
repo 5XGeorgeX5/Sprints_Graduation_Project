@@ -5,7 +5,6 @@ import com.team5.graduation_project.DTOs.Request.DoctorCreateDTO;
 import com.team5.graduation_project.DTOs.Response.AccountResponseDTO;
 import com.team5.graduation_project.DTOs.Response.DoctorResponseDTO;
 import com.team5.graduation_project.DTOs.Response.PatientResponseDTO;
-import com.team5.graduation_project.Models.Patient;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

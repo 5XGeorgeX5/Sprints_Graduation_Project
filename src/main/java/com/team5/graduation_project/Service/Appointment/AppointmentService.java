@@ -44,7 +44,7 @@ public class AppointmentService implements IAppointmentService {
             throw new ResponseStatusException(BAD_REQUEST, "Appointment time must be in the future");
         }
         List<Appointment> conflicts = appointmentRepository.findConflictingAppointments(
-                doctor.getId(),appointmentTime,
+                doctor.getId(), appointmentTime,
                 appointmentTime.plusMinutes(doctor.getAppointmentDuration())
         );
 

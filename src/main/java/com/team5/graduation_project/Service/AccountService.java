@@ -10,13 +10,16 @@ import com.team5.graduation_project.Models.Role;
 import com.team5.graduation_project.Repository.AccountRepository;
 import com.team5.graduation_project.Util.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AccountService {
@@ -41,17 +44,19 @@ public class AccountService {
     }
 
     public String login(LoginDTO loginDto) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
 
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
+            if (authentication == null || !authentication.isAuthenticated()) {
+                throw new InvalidLoginException("Invalid username or password");
+            }
 
-        if (authentication == null || !authentication.isAuthenticated()) {
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            return jwtUtil.generateToken(loginDto.getUsername());
+        } catch (AuthenticationException e) {
             throw new InvalidLoginException("Invalid username or password");
         }
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        return jwtUtil.generateToken(loginDto.getUsername());
-
     }
 
     public Account updateAccount(Long id, AccountRegistrationRequestDTO dto) {

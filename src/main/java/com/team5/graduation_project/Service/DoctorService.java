@@ -126,9 +126,9 @@ public class DoctorService implements IDoctorService {
     @Override
     public List<PatientResponseDTO> getDoctorPatients(Long id) {
 
-        List<Patient> patients= patientRepository.findPatientsByDoctorId(id);
-        List<PatientResponseDTO> dtos=new ArrayList<>();
-        for(Patient patient:patients){
+        List<Patient> patients = patientRepository.findPatientsByDoctorId(id);
+        List<PatientResponseDTO> dtos = new ArrayList<>();
+        for (Patient patient : patients) {
             dtos.add(mapper.patientResponseDTO(patient));
         }
         return dtos;

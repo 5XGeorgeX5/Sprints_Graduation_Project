@@ -6,6 +6,7 @@ import com.team5.graduation_project.Exceptions.ResourceNotFound;
 import com.team5.graduation_project.Response.BaseResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -41,5 +42,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidLoginException.class)
     public ResponseEntity<BaseResponse> handleIllegalArgument(InvalidLoginException e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new BaseResponse(e.getMessage(), null));
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<BaseResponse> handleAccessDenied(AccessDeniedException e) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new BaseResponse("Access Denied", null));
     }
 }

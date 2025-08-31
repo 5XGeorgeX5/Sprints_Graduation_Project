@@ -54,7 +54,7 @@ public class AppointmentController {
     public ResponseEntity<BaseResponse> addFollowUpNote(
             @PathVariable Long appointmentId,
             @RequestBody String note) {
-        AppointmentResponseDTO dto=appointmentService.addFollowupNotes(appointmentId, note);
+        AppointmentResponseDTO dto = appointmentService.addFollowupNotes(appointmentId, note);
         return ResponseEntity.ok(
                 new BaseResponse("Follow-up note added successfully", dto)
         );

@@ -30,8 +30,8 @@ public class DtoMapper {
         return modelMapper.map(doctor, DoctorResponseDTO.class);
     }
 
-    public PatientResponseDTO patientResponseDTO(Patient patient){
-        return modelMapper.map(patient,PatientResponseDTO.class);
+    public PatientResponseDTO patientResponseDTO(Patient patient) {
+        return modelMapper.map(patient, PatientResponseDTO.class);
     }
 
     public PharmacyResponseDTO toPharmacyResponseDTO(Pharmacy pharmacy) {

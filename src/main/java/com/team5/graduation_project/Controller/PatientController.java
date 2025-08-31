@@ -4,7 +4,6 @@ import com.team5.graduation_project.DTOs.Request.AccountRegistrationRequestDTO;
 import com.team5.graduation_project.DTOs.Response.AccountResponseDTO;
 import com.team5.graduation_project.DTOs.Response.PatientResponseDTO;
 import com.team5.graduation_project.DTOs.Response.PrescriptionResponseDTO;
-import com.team5.graduation_project.Models.Patient;
 import com.team5.graduation_project.Response.BaseResponse;
 import com.team5.graduation_project.Service.IDoctorService;
 import com.team5.graduation_project.Service.Patient.IPatientService;

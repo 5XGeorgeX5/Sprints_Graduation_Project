@@ -200,9 +200,6 @@ class DoctorServiceTest {
     }
 
 
-
-
-
     @Test
     void getDoctorAvailableSlots_ShouldThrow_WhenDoctorNotFound() {
         when(doctorRepository.findById(1L)).thenReturn(Optional.empty());
