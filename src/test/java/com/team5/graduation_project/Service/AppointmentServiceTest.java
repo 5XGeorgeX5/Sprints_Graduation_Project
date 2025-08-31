@@ -19,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -87,8 +88,8 @@ class AppointmentServiceTest {
         // Arrange
         when(patientRepository.findById(1L)).thenReturn(Optional.of(patient));
         when(doctorRepository.findById(1L)).thenReturn(Optional.of(doctor));
-        when(appointmentRepository.findByDoctorIdAndAppointmentTimeBetween(
-                eq(1L), any(LocalDateTime.class), any(LocalDateTime.class)))
+        when(appointmentRepository.findConflictingAppointments(
+                eq(1L), eq(futureTime), eq(futureTime.plusMinutes(30))))
                 .thenReturn(Collections.emptyList());
         when(appointmentRepository.save(any(Appointment.class))).thenReturn(appointment);
         when(mapper.toAppointmentResponseDTO(appointment)).thenReturn(responseDTO);
@@ -105,8 +106,8 @@ class AppointmentServiceTest {
 
         verify(patientRepository).findById(1L);
         verify(doctorRepository).findById(1L);
-        verify(appointmentRepository).findByDoctorIdAndAppointmentTimeBetween(
-                eq(1L), any(LocalDateTime.class), any(LocalDateTime.class));
+        verify(appointmentRepository).findConflictingAppointments(
+                1L, futureTime, futureTime.plusMinutes(30));
         verify(appointmentRepository).save(any(Appointment.class));
         verify(mapper).toAppointmentResponseDTO(appointment);
     }
@@ -177,7 +178,6 @@ class AppointmentServiceTest {
         assertEquals("Appointment time must be in the future", exception.getReason());
     }
 
-    @Test
     void createAppointment_DoctorNotAvailable() {
         // Arrange
         Appointment conflictingAppointment = new Appointment();
@@ -185,8 +185,8 @@ class AppointmentServiceTest {
 
         when(patientRepository.findById(1L)).thenReturn(Optional.of(patient));
         when(doctorRepository.findById(1L)).thenReturn(Optional.of(doctor));
-        when(appointmentRepository.findByDoctorIdAndAppointmentTimeBetween(
-                eq(1L), any(LocalDateTime.class), any(LocalDateTime.class)))
+        when(appointmentRepository.findConflictingAppointments(
+                eq(1L), eq(futureTime), eq(futureTime.plusMinutes(30))))
                 .thenReturn(List.of(conflictingAppointment));
 
         // Act & Assert
@@ -455,8 +455,8 @@ class AppointmentServiceTest {
 
         when(patientRepository.findById(1L)).thenReturn(Optional.of(patient));
         when(doctorRepository.findById(1L)).thenReturn(Optional.of(doctor));
-        when(appointmentRepository.findByDoctorIdAndAppointmentTimeBetween(
-                eq(1L), any(LocalDateTime.class), any(LocalDateTime.class)))
+        when(appointmentRepository.findConflictingAppointments(
+                eq(1L), eq(futureTime), eq(futureTime.plusMinutes(30))))
                 .thenReturn(Arrays.asList(conflict1, conflict2));
 
         // Act & Assert
@@ -507,15 +507,21 @@ class AppointmentServiceTest {
     // ========== VERIFICATION TESTS ==========
 
     @Test
-    void createAppointment_VerifyTimeRangeCalculation() {
+    void createAppointment_VerifyConflictDetectionWithDuration() {
         // Arrange
+        Doctor doctorWith60MinDuration = new Doctor();
+        doctorWith60MinDuration.setId(1L);
+        doctorWith60MinDuration.setAppointmentDuration(60);
+        doctorWith60MinDuration.setStartShift(LocalTime.of(9, 0));
+        doctorWith60MinDuration.setEndShift(LocalTime.of(17, 0));
+
         LocalDateTime appointmentTime = LocalDateTime.now().plusDays(1).withHour(14).withMinute(30);
         requestDTO.setAppointmentTime(appointmentTime);
 
         when(patientRepository.findById(1L)).thenReturn(Optional.of(patient));
-        when(doctorRepository.findById(1L)).thenReturn(Optional.of(doctor));
-        when(appointmentRepository.findByDoctorIdAndAppointmentTimeBetween(
-                eq(1L), any(LocalDateTime.class), any(LocalDateTime.class)))
+        when(doctorRepository.findById(1L)).thenReturn(Optional.of(doctorWith60MinDuration));
+        when(appointmentRepository.findConflictingAppointments(
+                eq(1L), eq(appointmentTime), eq(appointmentTime.plusMinutes(60))))
                 .thenReturn(Collections.emptyList());
         when(appointmentRepository.save(any(Appointment.class))).thenReturn(appointment);
         when(mapper.toAppointmentResponseDTO(appointment)).thenReturn(responseDTO);
@@ -523,12 +529,9 @@ class AppointmentServiceTest {
         // Act
         appointmentService.createAppointment(1L, requestDTO);
 
-        // Assert - Verify the time range is calculated correctly (±30 minutes)
-        LocalDateTime expectedStart = appointmentTime.minusMinutes(30);
-        LocalDateTime expectedEnd = appointmentTime.plusMinutes(30);
-
-        verify(appointmentRepository).findByDoctorIdAndAppointmentTimeBetween(
-                1L, expectedStart, expectedEnd);
+        // Assert - Verify the conflict detection uses the correct duration
+        verify(appointmentRepository).findConflictingAppointments(
+                1L, appointmentTime, appointmentTime.plusMinutes(60));
     }
 
     @Test
