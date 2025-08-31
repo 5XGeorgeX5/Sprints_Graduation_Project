@@ -3,21 +3,15 @@ package com.team5.graduation_project.Controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team5.graduation_project.DTOs.Response.AccountResponseDTO;
 import com.team5.graduation_project.DTOs.Response.PharmacyResponseDTO;
-import com.team5.graduation_project.Models.Account;
 import com.team5.graduation_project.Models.Role;
-import com.team5.graduation_project.Service.AccountService;
 import com.team5.graduation_project.Service.PharmacyService;
 import com.team5.graduation_project.Util.JwtFilter;
-import com.team5.graduation_project.Util.JwtUtil;
-import com.team5.graduation_project.config.SecurityConfig;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -64,6 +58,7 @@ class PharmacyControllerTest {
                 .andExpect(jsonPath("$.data[0].account.id").value(1L))
                 .andExpect(jsonPath("$.data[0].account.name").value("pharmacy1"));
     }
+
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void deletePharmacy_returnsNoContent() throws Exception {

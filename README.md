@@ -32,11 +32,20 @@ gradle bootRun
 Build an executable JAR:
 ```bash
 mvn clean package
-java -jar target/voting-system-*.jar
+java -jar target/graduation-project*.jar
 ```
 The API will start at:
 ```
 http://localhost:8080
+```
+
+Build project with Docker:
+```bash
+docker-compose up --build
+```
+The API will start at:
+```
+http://localhost:8999
 ```
 
 ### Entity Diagram

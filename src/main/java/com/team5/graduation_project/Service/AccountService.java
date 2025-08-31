@@ -34,11 +34,18 @@ public class AccountService {
         accountRepository.findByUsername(dto.getUsername()).ifPresent(s -> {
             throw new AlreadyExists("User already exists");
         });
+        accountRepository.findByEmail(dto.getEmail()).ifPresent(s -> {
+            throw new AlreadyExists("Email already exists");
+        });
         Account account = mapper.toAccountEntity(dto);
         account.setPassword(passwordEncoder.encode(dto.getPassword()));
         account.setRole(role);
 
-        accountRepository.save(account);
+        try {
+            accountRepository.save(account);
+        } catch (Exception e) {
+            throw new AlreadyExists("Error creating account");
+        }
 
         return account;
     }
