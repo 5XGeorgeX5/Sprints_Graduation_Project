@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PharmacyController {
 
-    private PharmacyService pharmacyService;
+    private final PharmacyService pharmacyService;
 
     @GetMapping("/all")
     @PreAuthorize("hasRole('ADMIN')")
