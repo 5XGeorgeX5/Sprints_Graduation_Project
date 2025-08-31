@@ -33,7 +33,7 @@ public class MedicineController {
         return ResponseEntity.ok(new BaseResponse("Pharmacy medicines retrieved successfully", medicines));
     }
 
-    @PreAuthorize("hasAuthority('PHARMACY')")
+    @PreAuthorize("hasRole('PHARMACY')")
     @PostMapping
     public ResponseEntity<BaseResponse> createMedicine(@Valid @RequestBody MedicineRequestDTO request) {
         MedicineResponseDTO medicine = medicineService.createMedicine(request);
@@ -59,7 +59,7 @@ public class MedicineController {
         return ResponseEntity.ok(new BaseResponse("Search completed successfully", medicines));
     }
 
-    @PreAuthorize("hasAuthority('PHARMACY')")
+    @PreAuthorize("hasRole('PHARMACY')")
     @PutMapping("/{id}")
     public ResponseEntity<BaseResponse> updateMedicine(@PathVariable Long id,
                                                        @Valid @RequestBody MedicineRequestDTO request) {
@@ -67,7 +67,7 @@ public class MedicineController {
         return ResponseEntity.ok(new BaseResponse("Medicine updated successfully", medicine));
     }
 
-    @PreAuthorize("hasAuthority('PHARMACY')")
+    @PreAuthorize("hasRole('PHARMACY')")
     @DeleteMapping("/{id}")
     public ResponseEntity<BaseResponse> deleteMedicine(@PathVariable Long id) {
         medicineService.deleteMedicine(id);

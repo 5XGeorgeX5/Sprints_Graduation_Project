@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@PreAuthorize("hasAuthority('PATIENT')")
+@PreAuthorize("hasRole('PATIENT')")
 @RequestMapping("/api/patient/{patientId}/orders")
 @RequiredArgsConstructor
 public class PatientOrderController {

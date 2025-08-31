@@ -20,7 +20,7 @@ public class MessageController {
 
     private final MessageService messageService;
 
-    @PreAuthorize("hasAuthority('PATIENT')")
+    @PreAuthorize("hasRole('PATIENT')")
     @GetMapping("/doctor/{doctorId}")
     public ResponseEntity<BaseResponse> getChatForPatient(
             @PathVariable Long doctorId,
@@ -29,7 +29,7 @@ public class MessageController {
         return ResponseEntity.ok(new BaseResponse("messages retrieved", messages));
     }
 
-    @PreAuthorize("hasAuthority('PATIENT')")
+    @PreAuthorize("hasRole('PATIENT')")
     @PostMapping("/doctor/{doctorId}")
     public ResponseEntity<BaseResponse> sendMessageToDoctor(
             @PathVariable Long doctorId,
@@ -41,7 +41,7 @@ public class MessageController {
                 body(new BaseResponse("Sent a message", response));
     }
 
-    @PreAuthorize("hasAuthority('DOCTOR')")
+    @PreAuthorize("hasRole('DOCTOR')")
     @GetMapping("/patient/{patientId}")
     public ResponseEntity<BaseResponse> getChatForDoctor(
             @PathVariable Long patientId,
@@ -50,7 +50,7 @@ public class MessageController {
         return ResponseEntity.ok(new BaseResponse("messages retrieved", messages));
     }
 
-    @PreAuthorize("hasAuthority('DOCTOR')")
+    @PreAuthorize("hasRole('DOCTOR')")
     @PostMapping("/patient/{patientId}")
     public ResponseEntity<BaseResponse> sendMessageToPatient(
             @PathVariable Long patientId,

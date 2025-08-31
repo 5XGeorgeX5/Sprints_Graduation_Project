@@ -24,14 +24,14 @@ public class DoctorController {
     private final IDoctorService doctorService;
 
     @GetMapping("/all")
-    @PreAuthorize(("hasAuthority('ADMIN')"))
+    @PreAuthorize(("hasRole('ADMIN')"))
     public ResponseEntity<BaseResponse> getAllRegisteredDoctors() {
         List<DoctorResponseDTO> doctors = doctorService.getAllRegisteredDoctors();
         return ResponseEntity.ok(new BaseResponse("Registered doctors retrieved successfully", doctors));
     }
 
     @PutMapping("/update/{doctorId}")
-    @PreAuthorize("hasAuthority('DOCTOR')")
+    @PreAuthorize("hasRole('DOCTOR')")
     public ResponseEntity<BaseResponse> updateDoctor(@PathVariable Long doctorId,
                                                      @RequestBody @Valid AccountRegistrationRequestDTO dto) {
         AccountResponseDTO updatedDoctor = doctorService.update(doctorId, dto);
@@ -39,7 +39,7 @@ public class DoctorController {
     }
 
     @DeleteMapping("/delete/{doctorId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BaseResponse> deleteDoctor(@PathVariable Long doctorId) {
         doctorService.delete(doctorId);
         return ResponseEntity.noContent().build();

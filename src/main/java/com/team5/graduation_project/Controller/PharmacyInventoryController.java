@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@PreAuthorize("hasAuthority('PHARMACY')")
+@PreAuthorize("hasRole('PHARMACY')")
 @RequestMapping("/api/pharmacy/{pharmacyId}/inventory")
 @RequiredArgsConstructor
 public class PharmacyInventoryController {

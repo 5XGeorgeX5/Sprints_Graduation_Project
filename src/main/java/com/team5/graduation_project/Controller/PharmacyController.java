@@ -21,14 +21,14 @@ public class PharmacyController {
     private PharmacyService pharmacyService;
 
     @GetMapping("/all")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BaseResponse> getAllRegisteredPharmacies() {
         List<PharmacyResponseDTO> pharmacies = pharmacyService.getAllRegisteredPharmacies();
         return ResponseEntity.ok(new BaseResponse("Registered pharmacies retrieved successfully", pharmacies));
     }
 
     @PutMapping("/update/{pharmacyId}")
-    @PreAuthorize("hasAuthority('PHARMACY')")
+    @PreAuthorize("hasRole('PHARMACY')")
     public ResponseEntity<BaseResponse> updatePharmacy(@PathVariable Long pharmacyId,
                                                        @RequestBody @Valid AccountRegistrationRequestDTO dto) {
         AccountResponseDTO updatedPharmacy = pharmacyService.updatePharmacy(pharmacyId, dto);
@@ -36,7 +36,7 @@ public class PharmacyController {
     }
 
     @DeleteMapping("/delete/{pharmacyId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BaseResponse> deletePharmacy(@PathVariable Long pharmacyId) {
         pharmacyService.deletePharmacy(pharmacyId);
         return ResponseEntity.noContent().build();

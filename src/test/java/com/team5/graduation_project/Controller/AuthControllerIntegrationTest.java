@@ -1,4 +1,4 @@
-package com.team5.graduation_project.Integration;
+package com.team5.graduation_project.Controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team5.graduation_project.DTOs.Request.AccountRegistrationRequestDTO;
